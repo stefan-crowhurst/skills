@@ -5,18 +5,18 @@ A collection of agent skills (slash commands and behaviors) loaded by Claude Cod
 ## Language
 
 **Issue tracker**:
-The tool that hosts a repo's issues: GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-tickets`, `to-spec`, and `triage` read from and write to it.
+The local markdown convention under `.scratch/` where this repo stores specs, issues, maps, and conversation history. Skills like `to-tickets`, `to-spec`, and `triage` read from and write to these files.
 _Avoid_: backlog manager, backlog backend, issue host
 
 **Issue**:
-A single tracked unit of work inside an **Issue tracker**: a bug, task, spec, or slice produced by `to-tickets`.
-_Avoid_: ticket (use only when quoting external systems that call them tickets, or for a **Decision ticket**, see below)
+A single tracked unit of work in a `.scratch/<feature-slug>/issues/<NN>-<slug>.md` file: a bug, task, or slice produced by `to-tickets`.
+_Avoid_: ticket (use **Issue**; the one exception is a **Decision ticket**, see below)
 
 **Decision ticket**:
-A `wayfinder` unit: a child **Issue** of a `wayfinder:map` holding a *question* whose resolution is a decision, not a slice of a build to execute. The **decision** qualifier is what keeps it distinct from an implementation ticket; `wayfinder` introduces the term, then uses "ticket".
+A `wayfinder` unit: a child local issue file of a `.scratch/<effort>/map.md` holding a *question* whose resolution is a decision, not a slice of a build to execute. The **decision** qualifier is what keeps it distinct from an implementation issue.
 
 **Triage role**:
-A canonical state-machine label applied to an **Issue** during triage (e.g. `needs-triage`, `ready-for-afk`). Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
+A canonical state-machine string written to an **Issue**'s `Status:` line during triage (e.g. `needs-triage`, `ready-for-agent`). Each role maps to a local status string via `docs/agents/triage-labels.md`.
 
 ## Relationships
 

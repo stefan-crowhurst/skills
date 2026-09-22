@@ -78,11 +78,9 @@ Only create if no Prettier config exists. Use these defaults:
 - [ ] `prettier` config exists
 - [ ] Run `npx lint-staged` to verify it works
 
-### 8. Commit
+### 8. Hand back
 
-Stage all changed/created files and commit with message: `Add pre-commit hooks (husky + lint-staged + prettier)`
-
-This will run through the new pre-commit hooks: a good smoke test that everything works.
+Leave the changes uncommitted. Tell the user to commit them with a message like `Add pre-commit hooks (husky + lint-staged + prettier)` so the commit runs through the new pre-commit hooks: a good smoke test that everything works.
 
 ## Notes
 

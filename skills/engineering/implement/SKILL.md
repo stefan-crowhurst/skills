@@ -12,4 +12,4 @@ Run typechecking regularly, single test files regularly, and the full test suite
 
 Once done, use /code-review to review the work.
 
-Commit your work to the current branch.
+Leave your work uncommitted in the working tree. Do not commit, push, or open a PR: hand back to the user to review, commit, and push.

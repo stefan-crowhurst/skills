@@ -5,7 +5,7 @@ description: Create exercise directory structures with sections, problems, solut
 
 # Scaffold Exercises
 
-Create exercise directory structures that pass `pnpm ai-hero-cli internal lint`, then commit with `git commit`.
+Create exercise directory structures that pass `pnpm ai-hero-cli internal lint`. Leave the files uncommitted for the user to review and commit.
 
 ## Directory naming
 

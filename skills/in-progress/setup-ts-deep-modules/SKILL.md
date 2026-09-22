@@ -66,7 +66,7 @@ Copy [`dependency-cruiser.config.cjs`](./dependency-cruiser.config.cjs) to the r
 
 ### 5. Scaffold the example package
 
-Create a committed `<packages-root>/example/` as a copy-me template:
+Create `<packages-root>/example/` as a copy-me template (leave it uncommitted; the user commits it):
 
 - `index.ts` is an entry point. Export one function that delegates to an internal file (so the package is visibly *deep*, not a pass-through).
 - `lib/impl.ts`: an internal file in a **subfolder**, imported by `index.ts`, not reachable from outside.

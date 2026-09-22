@@ -135,4 +135,4 @@ Required before declaring done:
 - [ ] Regression test passes (or absence of seam is documented)
 - [ ] All `[DEBUG-...]` instrumentation removed (`grep` the prefix)
 - [ ] Throwaway prototypes deleted (or moved to a clearly-marked debug location)
-- [ ] The hypothesis that turned out correct is stated in the commit / PR message, so the next debugger learns
+- [ ] The hypothesis that turned out correct is stated in the handoff summary, so the user can carry it into the commit message and the next debugger learns
