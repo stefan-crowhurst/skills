@@ -2,34 +2,24 @@
 
 One install story, one wording. `README.md`, `.changeset/*`, and every page under `docs/` must say **this** and nothing else. Change it here first, then propagate.
 
-`mattpocock-skills` is listed in **Claude Code's official marketplace** (configured name `claude-plugins-official`, source repo `anthropics/claude-plugins-official`), which every Claude Code install has out of the box. There is no marketplace to add first. Official Anthropic marketplaces have auto-update enabled by default ([discover-plugins](https://code.claude.com/docs/en/discover-plugins)), so "updates arrive automatically" is a true claim, not a hope.
+This fork does not publish the **Claude Code plugin**, so there is one install route: [skills.sh](https://skills.sh/stefan-crowhurst/skills), which copies editable skill files into the project.
 
-## Claude Code: the plugin
+## Claude Code: the plugin (not published from this fork)
 
 <canonical-block name="claude-code">
 
-```bash
-claude plugins install mattpocock-skills
-```
-
-Or, from inside a session:
-
-```
-/plugin install mattpocock-skills
-```
-
-It's in Claude Code's official marketplace, so there's nothing to add first, and updates arrive automatically.
+The plugin is not published from this fork. The manifests under `.claude-plugin/` are kept ready (`stefan-crowhurst-skills`) for when it is, and are **not** an install route today.
 
 </canonical-block>
 
 ## Codex, and other agents: skills.sh
 
-The plugin is Claude Code only. Everywhere else, [skills.sh](https://skills.sh/mattpocock/skills) copies editable skill files into the project. Use the whole-set form on `README.md`:
+[skills.sh](https://skills.sh/stefan-crowhurst/skills) copies editable skill files into the project. Use the whole-set form on `README.md`:
 
 <canonical-block name="skills-sh-whole-set">
 
 ```bash
-npx skills@latest add mattpocock/skills
+npx skills@latest add stefan-crowhurst/skills
 ```
 
 Pick the skills you want, and which coding agents to install them on. **The installer lets you choose which skills to take: make sure `setup-matt-pocock-skills` is one of them.**
@@ -41,7 +31,7 @@ Pick the skills you want, and which coding agents to install them on. **The inst
 <canonical-block name="skills-sh-one-skill">
 
 ```bash
-npx skills@latest add mattpocock/skills --skill=<name>
+npx skills@latest add stefan-crowhurst/skills --skill=<name>
 ```
 
 ```bash
@@ -54,8 +44,8 @@ npx skills@latest update <name>
 
 ## The two routes are exclusive
 
-The plugin is a managed, read-only bundle you subscribe to. skills.sh writes files you own and edit. Installing both leaves the user with every skill twice: always say "pick one".
+The plugin is a managed, read-only bundle you subscribe to. skills.sh writes files you own and edit. Installing both leaves the user with every skill twice: always say "pick one". Only skills.sh ships from this fork today; the rule applies if the plugin is ever published.
 
 ## Not the install story
 
-`.claude-plugin/marketplace.json` makes the repo its own single-plugin marketplace (`/plugin marketplace add mattpocock/skills`, then `/plugin install mattpocock-skills@mattpocock`). The official listing supersedes it. It is kept as a fallback for installing the repo directly (an unreleased commit, or a fork), and is **not** documented to users.
+`.claude-plugin/marketplace.json` makes the repo its own single-plugin marketplace (`/plugin marketplace add stefan-crowhurst/skills`, then `/plugin install stefan-crowhurst-skills@stefan-crowhurst`). It is kept ready for when the plugin ships, and is **not** documented to users today.
