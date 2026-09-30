@@ -22,6 +22,16 @@ If you want to keep up with changes to these skills, and any new ones I create, 
 
 [Sign Up To The Newsletter](https://www.aihero.dev/s/skills-newsletter)
 
+## About this fork
+
+This repo is a fork of [mattpocock/skills](https://github.com/mattpocock/skills). The skills are Matt's work, and this fork tracks his changes. Two behaviours are deliberately different here:
+
+**Skills stay local.** Issues and specs live as local markdown under `.scratch/`, with no GitHub or GitLab integration and no network dependency. `setup-matt-pocock-skills` offers no tracker choice, triage writes `Status:` lines into local issue files instead of tracker labels, and the GitHub/GitLab seed templates are gone. Hosted tracker backends are out of scope for this fork (see [`.out-of-scope/local-markdown-tracker-only.md`](./.out-of-scope/local-markdown-tracker-only.md)).
+
+**Nothing commits on your behalf.** [`/implement`](./skills/engineering/implement/SKILL.md) leaves its work uncommitted in the working tree and hands back for you to review, commit, and push. [`/code-review`](./skills/engineering/code-review/SKILL.md) reviews that uncommitted work as well as committed history.
+
+The install commands in this fork point at `stefan-crowhurst/skills`, and the Claude Code plugin is not published from here (the manifests are kept ready under `stefan-crowhurst-skills` for when it is).
+
 ## Installation (30-second setup)
 
 **[skills.sh](https://skills.sh/stefan-crowhurst/skills)** copies editable skill files into your project, so you can hack on them and make them your own. (Upstream's other route, the **[Claude Code plugin](https://code.claude.com/docs/en/plugins)**, installs the whole set as a managed, read-only bundle you subscribe to rather than fork. It is not published from this fork, so skills.sh is the route here.)
