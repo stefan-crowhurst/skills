@@ -83,7 +83,7 @@ Open one fresh session per issue, starting with the first file whose blockers ar
 `to-tickets` is a step in the main build chain:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement → code-review
+grill-with-docs → to-spec → to-tickets → implement → code-review → retro
 ```
 
-Upstream is [to-spec](./to-spec.md), which hands it a settled local spec. Downstream is [implement](./implement.md), which builds one issue per fresh session. When you are unsure which flow fits, [ask-matt](./ask-matt.md) routes you.
+Upstream is [to-spec](./to-spec.md), which hands it a settled local spec to slice against; keep both in one unbroken context window. Downstream is [implement](./implement.md), which builds one issue per fresh session, driving [tdd](./tdd.md) for the tests and closing with [code-review](./code-review.md). [implement-spec](./implement-spec.md) is the other way down: it reads the same `Blocked by:` edges as a task graph and builds every ready issue in parallel, landing the work uncommitted in the working tree for you to review, commit, and push. When you are unsure which skill or flow fits, [ask-matt](./ask-matt.md) routes you.

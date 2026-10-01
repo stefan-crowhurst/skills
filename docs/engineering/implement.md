@@ -54,7 +54,11 @@ Correct, and expected. `implement` has no completion step. It ends at the hand-b
 
 **Can I point it at all my tickets at once, or run several in parallel?**
 
-No. One invocation, one ticket. Batch dispatch across a ticket queue and [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) fan-out are both requested repeatedly, and neither exists. Running several `/implement` sessions side by side in one checkout is worse than unsupported: the sessions share one working tree, so their edits mix and neither hand-back is clean. Back when `implement` committed its own work, field reports described a `git commit --amend` in one session landing on another session's commit, a stash vanishing from `refs/stash`, and commits landing on the wrong branch, all in a single afternoon across three issues. Git worktrees are the community workaround, and note that `refs/stash` is shared across worktrees too, so worktrees alone do not fix the stash case. If you want parallelism today, you are assembling it yourself.
+Not with `/implement`: one invocation, one ticket. For a whole spec in one run, use [implement-spec](./implement-spec.md), which fans the tickets out to [subagents](https://www.aihero.dev/ai-coding-dictionary/subagent) across the ready frontier in the shared working tree, and leaves everything uncommitted at the end for you to review, commit, and push. Running several `/implement` sessions side by side in one checkout is worse than unsupported: the sessions share one working directory, one index, and one HEAD, so their edits mix and neither hand-back is clean. Back when `implement` committed its own work, field reports described a `git commit --amend` in one session landing on another session's commit, a stash vanishing from `refs/stash`, and commits landing on the wrong branch, all in a single afternoon across three issues. Git worktrees are the community workaround, and note that `refs/stash` is shared across worktrees too, so worktrees alone do not fix the stash case.
+
+**Does it commit anything, or open a pull request?**
+
+No. Nothing is committed at all. `implement` leaves the work uncommitted in the working tree and hands back for you to review, commit, and push. When you later push the work up as a pull request, [pr](./pr.md) shapes its body.
 
 **`code-review` says it cannot see my changes.**
 
@@ -80,10 +84,10 @@ Probably the ticket is too big rather than the skill being misused. A run does c
 
 ## Where it fits
 
-`implement` is the build step of the main chain, second from the end:
+`implement` is the build step of the main chain:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement → code-review
+grill-with-docs → to-spec → to-tickets → implement → code-review → retro
 ```
 
 Its neighbours are [to-tickets](./to-tickets.md), which produces the tickets it consumes and declares the blocking edges that decide their order; [tdd](./tdd.md), which it drives internally at each seam; and [code-review](./code-review.md), which it runs on the uncommitted working tree before handing back. It sits downstream of the planning skills and trusts them. It does not re-validate the shape of what it was handed, so a badly-structured map or a horizontally-layered ticket gets built as written.

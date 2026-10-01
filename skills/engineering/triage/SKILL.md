@@ -67,7 +67,7 @@ Show counts and a one-line summary per item. Let the maintainer pick one.
 
 3. **Verify the claim.** Before grilling, check that the claim holds up. For a bug, reproduce it from the issue's steps. Run the relevant local tests or commands and report what happened: confirmed with a code path, failed, or insufficient detail, which is a strong `needs-info` signal.
 
-4. **Grill if needed.** Call the Skill tool twice, for `grilling` and `domain-modeling`, and grill the request into shape one round at a time, sharpening domain terms and updating `CONTEXT.md` or ADRs inline as decisions land.
+4. **Grill if needed.** Call the Skill tool twice, for `grilling` and `domain-modeling`, and grill the request into shape one round at a time, sharpening domain terms and updating `GLOSSARY.md` or ADRs inline as decisions land.
 
 5. **Apply the outcome.** Confirm the edits, then update the local issue file:
    - `ready-for-agent`: append an [agent brief](AGENT-BRIEF.md) under `## Comments`, then set `Status: ready-for-agent`.

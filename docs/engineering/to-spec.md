@@ -2,7 +2,7 @@
 
 `to-spec` turns the conversation you have just had into a **[spec](https://www.aihero.dev/ai-coding-dictionary/spec)** and writes it to `.scratch/<feature-slug>/spec.md`.
 
-It does not interview you. By the time you reach for it the deciding is already done, so it synthesises what is known from the thread, codebase, `CONTEXT.md`, and ADRs. The spec records decisions already made rather than opening a fresh round of questions.
+It does not interview you. By the time you reach for it the deciding is already done, so it synthesises what is known (from the thread, from the codebase, from your `GLOSSARY.md` and ADRs) rather than opening a fresh round of questions. The spec is a record of decisions already made, not a place where new ones get made.
 
 ## When to reach for it
 
@@ -45,6 +45,10 @@ Synthesis is the defining constraint. If a decision is still open, return to [gr
 
 That status means the document is complete enough to hand off. It does not mean an agent should implement the whole feature. [to-tickets](./to-tickets.md) turns the spec into smaller issues.
 
+**Do I keep the spec frozen once tickets start, or let the agent rewrite it?**
+
+Nothing keeps it in sync, so in practice it is a snapshot of what you knew at that moment, and it goes stale the first time implementation teaches you something. Treat it as throwaway once the work ships. The artifacts meant to outlive it are your `GLOSSARY.md` and your ADRs; if something learned during implementation deserves to last, it belongs there, not in an edited spec.
+
 **What do I feed it after a wayfinder map?**
 
 Pass the map path, not an individual decision ticket. [wayfinder](./wayfinder.md) produces decisions, and `to-spec` collapses them into one buildable document.
@@ -62,7 +66,7 @@ Pass the map path, not an individual decision ticket. [wayfinder](./wayfinder.md
 `to-spec` is the multi-session step in the main build chain:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement → code-review
+grill-with-docs → to-spec → to-tickets → implement → code-review → retro
 ```
 
 Its neighbours upstream are [grill-with-docs](./grill-with-docs.md), which does the deciding, and [wayfinder](./wayfinder.md), whose cleared map merges here. Downstream, [to-tickets](./to-tickets.md) cuts the spec into local tracer-bullet issues. When you are unsure which flow fits, [ask-matt](./ask-matt.md) routes you.

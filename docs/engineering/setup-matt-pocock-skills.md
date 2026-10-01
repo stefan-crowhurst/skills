@@ -2,7 +2,7 @@
 
 `setup-matt-pocock-skills` configures one repo for the engineering flow. It records the local `.scratch/` tracker convention, the five triage status strings, and the location and reading rules for domain docs under `docs/agents/`.
 
-It is a prompt-driven skill, not a deterministic script. It explores the repo, shows the proposed markdown, waits for confirmation, and then writes the setup files and the `## Agent skills` block in the existing `CLAUDE.md` or `AGENTS.md`.
+It is a prompt-driven skill, not a deterministic script. It explores the repo (`AGENTS.md`, `CLAUDE.md`, `GLOSSARY.md`, `docs/adr/`, `docs/agents/`, `.scratch/`), proposes what it found, and waits for you to confirm before writing anything. Then it writes the setup files and the `## Agent skills` block in the existing `CLAUDE.md` or `AGENTS.md`.
 
 ## When to reach for it
 
@@ -28,8 +28,8 @@ The tracker decision is fixed: issues, specs, wayfinder maps, and conversation h
 | Decision | What it records | When it asks |
 | --- | --- | --- |
 | **Local tracker** | `.scratch/<feature-slug>/spec.md` and one issue file per ticket | It confirms the convention, but there is no alternative |
-| **Triage status strings** | `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix` | Only when [triage](./triage.md) is installed |
-| **Domain docs** | single-context or multi-context layout | Only when it finds monorepo signals |
+| **Triage status strings** | the five canonical strings `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix` | Only when [triage](./triage.md) is installed |
+| **Domain docs** | single-context or multi-context: single-context is one `GLOSSARY.md` plus `docs/adr/` at the root, multi-context is a root `GLOSSARY-MAP.md` pointing at per-context `GLOSSARY.md` files | Only when it finds monorepo signals |
 
 ## Common questions
 
@@ -59,4 +59,4 @@ Only to restart the setup from scratch. The generated markdown is inspectable an
 
 ## Where it fits
 
-`setup-matt-pocock-skills` is the **run-once setup** for the engineering flow. Its neighbours are [triage](./triage.md), which uses the status vocabulary, [to-spec](./to-spec.md) and [to-tickets](./to-tickets.md), which write `.scratch/` artifacts, and [wayfinder](./wayfinder.md), which uses the local wayfinding operations. [ask-matt](./ask-matt.md) routes the whole set.
+`setup-matt-pocock-skills` is the **run-once setup** for the engineering flow, the precondition everything else assumes rather than a step in the chain. Its neighbours are its readers: [triage](./triage.md), which uses the status vocabulary written here; [to-spec](./to-spec.md) and [to-tickets](./to-tickets.md), which write `.scratch/` artifacts; and [wayfinder](./wayfinder.md), which reads the "Wayfinding operations" section of `docs/agents/issue-tracker.md` to know how maps and child [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) are stored. The domain-doc layout it records is the one [domain-modeling](./domain-modeling.md) fills in later: it creates `GLOSSARY.md` and ADRs lazily, when a term or decision actually gets resolved, so an empty repo after setup is the expected state. For which skill to reach for next, [ask-matt](./ask-matt.md) routes the whole set.

@@ -85,9 +85,11 @@ Yes, as of the hand-back flow. When the work is uncommitted, it reviews `git dif
 
 ## Where it fits
 
-`code-review` is the review step at the tail of the build chain: `grill-with-docs → to-spec → to-tickets → implement → code-review`. It also stands alone on any branch or working tree you point it at.
+`code-review` is the review step near the tail of the build chain: `grill-with-docs → to-spec → to-tickets → implement → code-review → retro`. It also stands alone on any branch or working tree you point it at.
 
-- [implement](./implement.md) is the closest neighbour: it drives the build and calls this skill as its own closing review of the uncommitted working tree.
+- [implement](./implement.md) is the closest neighbour: it drives the build and calls this skill as its own closing review of the uncommitted working tree. [implement-spec](./implement-spec.md) does the same once, over the whole run.
+- [retro](./retro.md) comes after it and tunes it: when a session shows the review missing a class of mistake, `retro` proposes the check or the `CODING_STANDARDS.md` rule the Standards axis then reads.
+- [pr](./pr.md) shapes the pull request body for when you later push the reviewed work up as one.
 - [to-spec](./to-spec.md) and [to-tickets](./to-tickets.md) produce the document the Spec axis checks against; a vague spec makes that axis vague.
 - [improve-codebase-architecture](./improve-codebase-architecture.md) is the whole-codebase counterpart: this skill only ever looks at one diff.
 
