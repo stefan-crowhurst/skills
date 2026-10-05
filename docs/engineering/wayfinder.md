@@ -1,79 +1,103 @@
 ## What it does
 
-`wayfinder` takes an effort too big for one agent [session](https://www.aihero.dev/ai-coding-dictionary/session), where the **destination** is nameable but the route is not, and charts it as a local **map** of **decision tickets** under `.scratch/<effort>/`.
+`wayfinder` takes an effort too big for one agent [session](https://www.aihero.dev/ai-coding-dictionary/session). This is an idea whose **destination** you can name but whose route you cannot yet see. Wayfinder charts it as a local **map** of **decision tickets** under `.scratch/<effort>/`, then resolves the tickets one at a time until the route is clear.
 
-It plans, it does not build. Each ticket holds a question whose resolution is a decision, not an implementation slice. When the map clears, wayfinder hands off to [to-spec](./to-spec.md).
+It plans and does not build. Every ticket asks a question, and the answer is a decision, not a slice of a build. The map is finished when nothing is left to decide before someone builds the thing. This rule separates a wayfinder ticket from an ordinary implementation [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket), and it is the rule agents break most often. When the map clears, wayfinder hands off and does not continue into code.
 
 ## When to reach for it
 
 You invoke this by typing `/wayfinder`, and the agent will not reach for it on its own.
 
-The trigger is narrow: the effort is larger than one session and the route is foggy.
+It is the heaviest flow in the set, so the trigger is narrow. The effort must be larger than one agent session can hold, and the route to the destination must be unclear. The split is session count: `/grill-with-docs` for single-session planning, `/wayfinder` for multi-session planning.
 
 | What you have | What to run |
 | --- | --- |
-| A feature you can settle in one sitting | [grill-with-docs](./grill-with-docs.md) |
-| A multi-session effort with an unclear route | `/wayfinder` |
-| A thread where decisions are complete | [to-spec](./to-spec.md) |
-| A cleared map | [to-spec](./to-spec.md), then [to-tickets](./to-tickets.md) and [implement](./implement.md) |
+| A well-scoped feature you can settle in one sitting | [grill-me](../productivity/grill-me.md), or [grill-with-docs](./grill-with-docs.md) when there is a codebase |
+| A greenfield project, or a build spanning many sessions, with the route still unclear | `/wayfinder` |
+| A thread where the deciding is already done | [to-spec](./to-spec.md): skip straight past the map |
+| A cleared wayfinder map | [to-spec](./to-spec.md), then [to-tickets](./to-tickets.md) and [implement](./implement.md) |
+| An existing session that has already grown too big | say "hand off to `/wayfinder`" ([handoff](../productivity/handoff.md) bridges into a map as well as out of one) |
+
+Greenfield is not a requirement. People use wayfinder routinely on legacy and half-built codebases, and it can be more useful there, because much of the fog is "what is already true here" rather than "what should we do".
 
 ## Prerequisites
 
-[setup-matt-pocock-skills](./setup-matt-pocock-skills.md) must have configured the local tracker seed. The map is `.scratch/<effort>/map.md`; child issues are `.scratch/<effort>/issues/NN-<slug>.md`. Read the seed's **Wayfinding operations** section before creating or resolving anything.
+The map and its tickets live in the local tracker, so wayfinder needs the tracker setup from [setup-matt-pocock-skills](./setup-matt-pocock-skills.md). That step writes a **Wayfinding operations** section into `docs/agents/issue-tracker.md`, describing the map, its child tickets, blocking edges, and frontier queries as local markdown. The map is `.scratch/<effort>/map.md`; child issues are `.scratch/<effort>/issues/NN-<slug>.md`. Read that section before creating or resolving anything.
+
+The layout does real work: the `Blocked by:` lines and `Status:` strings make the frontier visible in the files themselves. Where the map text and the issue files disagree, wayfinder infers blockers from the text, and you must supervise it more closely.
 
 ## The map, the fog, and the frontier
 
-The map is an index, not a store. It contains:
+The **map** is a local file at `.scratch/<effort>/map.md`, and its tickets are the child issue files under `.scratch/<effort>/issues/`. It is an **index, not a store**. A decision lives in exactly one place, its ticket, and the map only gives a one-line summary and a link. A session loads the map at low resolution and opens individual tickets when it needs them. This lets a map keep growing without every session loading its whole history.
 
-- **Destination**: what reaching the end looks like.
-- **Decisions so far**: one line per completed ticket, pointing to its local file.
-- **Not yet specified**: fog that cannot yet be phrased as a sharp question.
-- **Out of scope**: work ruled beyond the destination; its ticket is closed with `Status: done`.
+The map has four sections:
 
-Each child issue starts with `Status: ready-for-agent`, `Type: wayfinder:<type>`, and `Blocked by: NN, NN`. Claiming means setting `Status: claimed` before work. Resolving means appending the answer under `## Comments`, setting `Status: done`, and adding a one-line gist to the map. A ticket ruled out of scope is also set to `Status: done`, with its gist going to the map's **Out of scope** section instead. The **frontier** is a scan of local files for non-terminal issues whose blockers are done and which are not claimed.
+- **Destination.** What the end of this map looks like. You name it first, before any ticket exists, because the destination fixes the scope you measure every ticket against.
+- **Decisions so far.** One line per closed ticket, each with a link to where the detail lives.
+- **Not yet specified.** This is the **fog of war**: decisions you can tell are coming but cannot yet phrase sharply. The test for fog versus ticket is whether you can state the question precisely *now*, not whether you can answer it. When you resolve a ticket, the fog ahead of it clears, and anything you can now specify graduates into a new ticket.
+- **Out of scope.** Work beyond the destination. Fog only gathers *toward* the destination, so out-of-scope work stays closed and never graduates.
+
+Each child issue starts with `Status: ready-for-agent`, `Type: wayfinder:<type>`, and `Blocked by: NN, NN`. The **frontier** is the set of open, unblocked, unclaimed tickets: a scan of the issue files for non-terminal status, blockers done, and no `Status: claimed`. A session claims a ticket by setting `Status: claimed` before it does any work, so concurrent sessions skip that ticket. Resolving means appending the answer under `## Comments`, setting `Status: done`, and adding a one-line gist to the map's **Decisions so far**. A ticket ruled out of scope is also set to `Status: done`, with its gist going to **Out of scope** instead. Sessions refer to tickets by name, never by a bare `#42`, because a wall of issue numbers is hard to read in narration.
 
 ## The four decision-ticket types
 
-| Type | Mode | Reach for it when |
-| --- | --- | --- |
-| `grilling` | HITL | The question can be settled by talking it through. |
-| `prototype` | HITL | A rough artifact is needed to decide how something should look or behave. |
-| `research` | AFK | A fact outside the working directory blocks a decision. |
-| `task` | Either | Manual work must happen before a decision can be made. |
+Every ticket carries a `wayfinder:<type>` value in its `Type:` line. Each ticket is either **[HITL](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop)** (worked with a human who speaks for themselves) or **[AFK](https://www.aihero.dev/ai-coding-dictionary/afk)** (driven by the agent alone). A HITL ticket resolves only through the live exchange. An agent that answers its own [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) questions has broken it.
 
-Research is the only exception to one ticket per session. Its subagent captures findings on a throwaway `research/<name>` branch, with a context pointer in the local issue file. Commits on that throwaway research branch are allowed.
+| Type | Mode | Reach for it when | Resolved by |
+| --- | --- | --- | --- |
+| `grilling` | HITL | The default. The question can be settled by talking it through. | [grilling](../productivity/grilling.md) plus [domain-modeling](./domain-modeling.md), in a fresh session |
+| `prototype` | HITL | "How should this look" or "how should this behave": a question talking cannot settle. | [prototype](./prototype.md), with a link from the ticket to the built artifact |
+| `research` | AFK | A fact outside the working directory is blocking a decision. | A [research](./research.md) [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent), started when you chart the map and run in parallel on a `research/<name>` branch |
+| `task` | Either | Nothing to decide, but manual work blocks a decision, such as provisioning access, signing up for a service, or moving data so you can see its shape. | The agent alone where it can, otherwise a precise checklist for the human |
+
+`task` is the only type that *does* rather than decides. It belongs on the map only because it unblocks a decision, never because it delivers part of the destination. This type goes wrong most often in practice. Agents read it as an implementation step and start to write product code inside the map.
+
+Research is the only exception to *one ticket per session*. Its subagent captures findings on a throwaway `research/<name>` branch, with a context pointer in the local issue file. Commits on that throwaway research branch are allowed.
 
 ## Common questions
 
-**How is this different from `/grill-with-docs`?**
+**How is this different from `/grill-with-docs`? Which should I start with?**
+Session count, not project size. `/grill-with-docs` is single-session planning; wayfinder is multi-session planning. If you can hold the whole thing in one conversation, grilling is cheaper and better, and wayfinder is slower and denser for that case. The community shorthand is that wayfinder only makes sense if the work does not fit into a single session. This is by far the most-asked wayfinder question. People keep asking it because the skill descriptions do not tell you where your own task sits on that line. You have to judge the session count yourself.
 
-Session count. Use [grill-with-docs](./grill-with-docs.md) when the whole decision fits one conversation. Use wayfinder when it does not.
+**When it asks for the "destination", does it mean the end of this session or the end of everything?**
+The end of the whole map, not just the first session. The question reads ambiguously, but wayfinder is a multi-session tool by definition, so a session-scoped answer never makes sense. Typical destinations are a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) to hand off, a decision to lock before planning starts, a proof of concept, or an in-place change such as a data migration.
 
-**Where does the map live?**
+**The map is cleared. Didn't wayfinder already write the spec and make the tickets? Why do I still need `/to-spec` and `/to-tickets`?**
+No. Wayfinder's tickets are decision tickets, and by the time the map closes they are all closed too. What is left is a map full of linked decisions, which is not a build plan. [to-spec](./to-spec.md) collapses those linked decisions into one spec (pass it the map path), and [to-tickets](./to-tickets.md) slices that spec into tracer-bullet implementation tickets. If you loop the map straight into [implement](./implement.md), you skip the collapse and lose the linked detail. Go straight to implementation only when the effort turned out small. Some people run the shorter pipeline and report that it works. The two extra steps give you an explicit spec that a reviewer or a colleague can read, which matters more when you do not work alone.
 
-At `.scratch/<effort>/map.md`, with child issues in `.scratch/<effort>/issues/`. The map is local markdown, not a separate service.
+**My agent started writing production code in the middle of a wayfinder session.**
+This is the most-reported failure with this skill, and a real gap in the skill causes it. You can override wayfinder's "plan, don't do" default in the map's **Notes**. But the agent writes the Notes, so the constraint and its exemption live in a file that the constrained agent owns. One user watched an agent write "this map carries execution" into its own Notes. In later sessions the agent read that line back as permission and built on a live server. The skill has no hard stop for "I meant the default." Until it does, read the Notes on any map you did not chart yourself, keep implementation in separate sessions, and treat any `wayfinder:task` that looks like a slice of the build as mis-typed.
+
+**I charted 27 tickets, and by the time I got to the thirteenth, the rest no longer made sense.**
+This question is verbatim from a user report, and others report the same outcome. By default, wayfinder plans comprehensively. When later tickets rest on assumptions that earlier tickets invalidate, the map falls into the waterfall trap that critics accuse the skill of. Two things help. First, scope the map to a bounded destination, not to the whole product. Users report that maps scoped to one defined epic behave better than a sprawling "implement V1". The goal is to ship small increments, not to plan something very big. Second, [prototype](https://www.aihero.dev/ai-coding-dictionary/prototyping) aggressively. The route stays current because cheap concrete artifacts expose uncertainty before implementation depends on it. Wayfinder is "prototypemaxxing", not "planmaxxing".
 
 **Can I work several tickets in parallel?**
+The frontier shows you which tickets you can take, and blocking edges make parallel work safe on paper. In practice, one ticket at a time is the safer default. If you work two grilling tickets at once, one session can ask you a question you just answered in the other, because the sessions share no [context](https://www.aihero.dev/ai-coding-dictionary/context). Prototype tickets have a known gap too. One user reported an agent that built three UI variations, chose one itself, and closed the ticket. That choice is yours, and the skill does not yet say so clearly enough. If you do run tickets in parallel, review the dependency graph yourself first.
 
-The local convention assumes one editor. Work one ticket at a time unless you deliberately coordinate separate files and reconcile the map yourself.
+**Do I have to use a hosted issue tracker?**
+No. The map and its tickets are local markdown under `.scratch/`, in this repo; that is the tracker here. Wayfinder infers the dependency graph from the `Blocked by:` text, so you must correct it by hand when the text and the files disagree. One trade-off to know: material stored in the repo tends to persist by accident, so an old map outlives its effort unless you clean it up.
 
-**What happens after the map clears?**
+**The grilling is exhausting. Every question is three paragraphs long.**
+This is the sharpest open complaint about wayfinder, and nobody has fixed it yet. One user broke it down this way: the verbosity itself causes decision exhaustion, and the length hides *why* the agent asks a question, so you lose the chain from decision to decision as the map grows. The verbosity looks like a property of the current set of [models](https://www.aihero.dev/ai-coding-dictionary/model) rather than of the skill. Users try two mitigations: a lower [reasoning effort](https://www.aihero.dev/ai-coding-dictionary/effort), and a plain-language instruction in your global `CLAUDE.md`. Expect to think hard here anyway. Wayfinder demands a lot of thinking from you, and that is most of its purpose, not a defect.
 
-Pass the map path to [to-spec](./to-spec.md). It collapses the linked decisions into a buildable spec, after which [to-tickets](./to-tickets.md) creates implementation issues.
+**A decision I already closed turned out to be wrong. Do I edit the old ticket or make a new one?**
+There is no official guidance, and the agent's default is unhelpful. It tends to design around the bad decision instead of challenging it, so you must steer it yourself. What works is to tell wayfinder plainly what changed. It then updates the map, revises the affected tickets, and comments on the closed ones. You can recover from scope changes mid-map. But if you *designed* a map to change, that is a sign the scope is wrong.
 
-**What if the route turns out to be small?**
-
-If the opening breadth-first grill finds no fog, stop and ask whether to skip the map and proceed with [to-spec](./to-spec.md) or [implement](./implement.md).
+**Where did `decision-mapping` go?**
+It is this skill. v1.1 renamed it to `wayfinder`, and you invoke it as `/wayfinder`. "Decision map" was jargon, and it was also inaccurate, because only one of the four ticket types is a decision by itself. The new name gave the skill one consistent vocabulary (destination, fog of war, frontier, the map) instead of an invented term on top. The unit kept the word "decision": a wayfinder ticket is a **decision ticket**, so that people do not read it as an implementation ticket.
 
 ## It's working if
 
-- The destination is agreed before the first child issue exists.
-- Every open child issue reads as a question, not a build instruction.
-- The frontier comes from scanning `.scratch/<effort>/issues/` and checking `Blocked by:` and `Status:`.
-- A resolved issue has its answer and disclaimer under `## Comments`, `Status: done`, and a line in the map's decisions.
-- The fog shrinks as new sharp questions become child issue files.
-- A cleared map hands you toward a spec, not implementation.
+- The destination is written down and agreed before a single ticket exists.
+- Every open ticket reads as a question. Any ticket that reads "build the X" is either mis-typed or belongs downstream of the map.
+- You can look at the issue files and see which tickets are takeable without opening the map, because the `Blocked by:` lines and `Status:` strings show the frontier.
+- A session resolves one ticket, appends the answer under `## Comments`, sets `Status: done`, and adds one line to the map's *Decisions so far*. Then it stops.
+- **Not yet specified** shrinks over time. When fog graduates into a ticket, it leaves that section and does not appear in both places.
+- When the opening breadth-first grill finds no fog at all, the skill stops and tells you the effort is small enough to skip the map.
+- The session that finishes the map points you toward a spec, not a pull request.
 
 ## Where it fits
 
-`wayfinder` is a situational on-ramp for work too large and unclear for one session. It merges back into the main chain at [to-spec](./to-spec.md). Underneath, [grilling](../productivity/grilling.md) and [domain-modeling](./domain-modeling.md) resolve conversation tickets, [prototype](./prototype.md) resolves concrete design questions, and [research](./research.md) supplies facts in the background. [ask-matt](./ask-matt.md) routes the whole set.
+`wayfinder` is a **situational on-ramp**, not the default starting point. Most work still starts on the grill-led idea → ship chain. You use wayfinder when the idea is too big to hold in one session. It rejoins that chain at [to-spec](./to-spec.md), because a cleared map hands off and does not build.
+
+Most of the work happens in other skills that wayfinder schedules. [grilling](../productivity/grilling.md) and [domain-modeling](./domain-modeling.md) resolve the default ticket type, [prototype](./prototype.md) resolves the tickets that talk cannot settle, and [research](./research.md) runs as a subagent so its reading stays out of your session. [handoff](../productivity/handoff.md) moves work in and out: into a map from a conversation that grew too big, and out of a map when a side quest appears mid-session. For anything else, [ask-matt](./ask-matt.md) routes over the whole set.

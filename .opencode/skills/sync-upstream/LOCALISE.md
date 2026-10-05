@@ -10,7 +10,7 @@ Every one of these still holds when the run ends. Incoming work that breaks one 
 
 2. **Nothing commits on your behalf.** A skill leaves its work uncommitted in the working tree and hands back. Wording that has a skill commit, push, open a branch or worktree, or open a pull request becomes hand-back wording: the work lands in the shared working tree, and the review, the commit, and the push stay yours.
 
-3. **Docs cross-links are relative.** A link from one docs page to another is `./<name>.md` in the same bucket or `../<other-bucket>/<name>.md` in the other. An `https://aihero.dev/skills-<name>` link becomes relative. Dictionary links (`https://www.aihero.dev/ai-coding-dictionary/...`) and links into the upstream repo stay absolute: they are external references, not cross-links.
+3. **Docs cross-links are relative.** A link from one docs page to another is `./<name>.md` in the same bucket or `../<other-bucket>/<name>.md` in the other. An `https://aihero.dev/skills-<name>` link becomes relative. The test is where the target lives, not how the link is spelled: anything that exists in this repo (a docs page, a skill file such as `DEEPENING.md` or `template.sh`) becomes a relative path, even when upstream spells it as a `github.com/.../blob/...` URL. Truly external references stay absolute: dictionary links (`https://www.aihero.dev/ai-coding-dictionary/...`) and anything that lives only upstream. Hosted-tracker citations (issue and PR links) are dropped under invariant 1 rather than relinked.
 
 4. **Upstream's structure is adopted as it stands.** Renames, bucket moves, graduations, and outright removals are upstream's call, so take them: what the glossary file is called, which bucket a skill sits in, which skills still exist. Following structure is what keeps the next merge small.
 
@@ -24,10 +24,14 @@ Where both sides edited the same passage, work from upstream's side and re-apply
 
 1. Take upstream's text as the base. It carries the new content and the structural change.
 2. Rewrite any tracker or commit wording to the invariant form above.
-3. Swap `https://aihero.dev/skills-*` links for relative ones, and call the glossary file whatever upstream currently calls it.
+3. Swap `https://aihero.dev/skills-*` links and in-repo `github.com/.../blob/...` links for relative ones, and call the glossary file whatever upstream currently calls it.
 4. Keep the rest, including upstream's new sentences and its dictionary links.
 
 A **clean arrival** is localised the same way. Files that merge without a conflict still carry upstream's wording, and they are the easiest thing in a run to forget.
+
+A **whole-page rewrite** needs a different move. When upstream rewrites a page wholesale (a repo-wide style pass, say), do not resolve it hunk by hunk. Take upstream's page in full as the new base and re-apply the invariants to the whole page, using the fork's pre-merge version only as the glossary of established localised phrasings. Same destination as a hunk localisation, without the archaeology.
+
+Release history is the exception: `CHANGELOG.md` keeps upstream's narrative, versions, and claims as it wrote them, so the fork's history stays readable as upstream's. Only the no-em-dash rule rewrites it, punctuation only.
 
 Passage-by-passage rewriting rather than word swapping is a writing job, and the house rules govern it: `Call the Skill tool with "writing-for-agents"`.
 

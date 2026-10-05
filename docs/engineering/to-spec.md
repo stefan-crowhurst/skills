@@ -2,18 +2,18 @@
 
 `to-spec` turns the conversation you have just had into a **[spec](https://www.aihero.dev/ai-coding-dictionary/spec)** and writes it to `.scratch/<feature-slug>/spec.md`.
 
-It does not interview you. By the time you reach for it the deciding is already done, so it synthesises what is known (from the thread, from the codebase, from your `GLOSSARY.md` and ADRs) rather than opening a fresh round of questions. The spec is a record of decisions already made, not a place where new ones get made.
+It does not interview you. When you reach for it, the deciding is already done. So it synthesises what is known (from the thread, the codebase, your `GLOSSARY.md` and ADRs) and does not start a new round of questions. The spec records decisions you already made. It is not a place to make new ones.
 
 ## When to reach for it
 
 You invoke this by typing `/to-spec`, and the agent will not reach for it on its own.
 
-Reach for it when the build is too big for one agent [session](https://www.aihero.dev/ai-coding-dictionary/session) and has to survive being split across several.
+Reach for it when the build is too big for one agent [session](https://www.aihero.dev/ai-coding-dictionary/session) and must be split across several. That is the whole trigger:
 
 | Where you are | What to run |
 | --- | --- |
 | You have not decided anything yet | [grill-with-docs](./grill-with-docs.md) first |
-| Decided, and the work fits one [context window](https://aihero.dev/ai-coding-dictionary/context-window) | [implement](./implement.md), skip the spec |
+| Decided, and the work fits one [context window](https://www.aihero.dev/ai-coding-dictionary/context-window) | [implement](./implement.md), skip the spec |
 | Decided, and the work spans several sessions | `/to-spec`, then [to-tickets](./to-tickets.md) |
 | A [wayfinder](./wayfinder.md) map has cleared | `/to-spec` with the map path |
 
@@ -23,50 +23,59 @@ Reach for it when the build is too big for one agent [session](https://www.aiher
 
 ## The spec is a decision record
 
-The spec exists because context windows end. Everything settled while [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) is in one conversation that is about to be cleared. The spec is what survives that.
+The spec exists because context windows end. You settled many things while [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling): the shape of the solution, the choices you argued through, and what you deliberately refused. All of that is in one conversation that you are about to clear. The spec keeps it.
 
-It does not validate or decide anything. It captures what was decided in the project's own vocabulary. Anything it asserts that you never actually said is a defect.
+So the spec does not validate or decide anything. It records what you decided, in your project's own vocabulary, so a fresh session can pick up the work without you explaining it again. If the spec states something you never said, that is a defect.
 
 ## Seams before prose
 
-Before writing, `to-spec` sketches the **seams** where the feature will be tested and checks them with you. It prefers existing seams, takes the highest seam it can, and aims for one seam across the change.
+Before it writes anything, `to-spec` sketches the **seams** where the feature will be tested, and checks them with you. It prefers existing seams to new ones, and picks the highest seam it can. The ideal number of seams for a change is one.
+
+Other skills use those agreed seams later. [tdd](./tdd.md) works only at seams you agreed in advance. [code-review](./code-review.md) reviews the diff against the spec, so a seam nobody agreed to shows up as a review finding. Both connections go through this document. That is why you should take the seam conversation seriously here, and not leave it for implementation.
 
 ## Common questions
 
-**Where does the spec go?**
+**Where did `/to-prd` go?**
+It is this skill, renamed in v1.1. "Spec" is now the one term used throughout, and the old `to-prd` slug no longer works, so reinstall under the new name. The old vocabulary is replaced by the pair *spec* and *tickets*. The spec is the destination and the decisions that fix it. The [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) are the steps that get there. If you change direction, delete the unfinished tickets and keep the spec.
 
-In `.scratch/<feature-slug>/spec.md`, with `Status: ready-for-agent` near the top. [to-tickets](./to-tickets.md) reads that local path directly.
+**Why does the spec carry `Status: ready-for-agent`? I don't want an agent implementing off it.**
+The status means "no further triage needed": the document is complete enough for an agent to work from. It marks an input, not a work order. But [AFK](https://www.aihero.dev/ai-coding-dictionary/afk) agents that poll for `ready-for-agent` cannot see that difference. They will try to build the whole spec in one run instead of picking up the ticket slices. This is the most-reported problem with the skill. Until it changes, exclude the parent spec explicitly in your AFK agent's prompt, or clear the status after `/to-tickets` has run.
 
-**Why does it not ask me more questions?**
+**Why not go straight from grilling to `/to-tickets` and skip the spec?**
+Often you should. The spec is worth its step only on multi-session work. Its value is that the tickets are disposable and the spec is not. Each ticket is sized for one fresh context window and then gets deleted or closed, while the spec stays as the one place that records the reasoning behind them. On a single-session change, that gives you nothing, and you pay for an extra synthesis step where the [model](https://www.aihero.dev/ai-coding-dictionary/model) can drift. Go from grilling to `/implement`.
 
-Synthesis is the defining constraint. If a decision is still open, return to [grill-with-docs](./grill-with-docs.md) instead of asking `to-spec` to invent an answer.
+**I just finished a wayfinder map. What do I feed it?**
+Pass the map path, not the individual decision tickets. [wayfinder](./wayfinder.md) produces decisions spread across a map, not deliverables. `to-spec` collapses them into one document you can build from. If you loop the map straight into `/implement`, you lose that step.
 
-**Why does the spec say `ready-for-agent`?**
-
-That status means the document is complete enough to hand off. It does not mean an agent should implement the whole feature. [to-tickets](./to-tickets.md) turns the spec into smaller issues.
+**Is the spec for me to review, or is it just for the agent?**
+Mostly for the agent, and it reads that way: complete, dense, and full of references. Read the seams and the out-of-scope section. In those two places, a wrong decision is cheapest to catch now and most expensive to find later. People do complain about reading the whole thing, and there is no summary mode. But if the spec surprises you, the grilling was too shallow; the spec is not too long.
 
 **Do I keep the spec frozen once tickets start, or let the agent rewrite it?**
+Nothing keeps it in sync. In practice it is a snapshot of what you knew at that moment, and it goes out of date the first time implementation teaches you something. Treat it as disposable after the work ships. Your `GLOSSARY.md` and ADRs are the files meant to last. If you learn something during implementation that should last, put it there, not in an edited spec.
 
-Nothing keeps it in sync, so in practice it is a snapshot of what you knew at that moment, and it goes stale the first time implementation teaches you something. Treat it as throwaway once the work ships. The artifacts meant to outlive it are your `GLOSSARY.md` and your ADRs; if something learned during implementation deserves to last, it belongs there, not in an edited spec.
+**My work is a refactor or a module boundary, not a feature. Does the template fit?**
+Less well, and this is a known limitation. The template relies heavily on user stories, which do not fit architectural work. You end up writing stories nobody asked for around decisions that are really about interfaces and invariants. Use the implementation-decisions and testing-decisions sections instead. Record the lasting architectural decisions as ADRs through [grill-with-docs](./grill-with-docs.md), not in the spec.
 
-**What do I feed it after a wayfinder map?**
+**Will it check the tracker for related work, or cite the ADRs it's respecting?**
+No to both. It reads and follows the ADRs for the area it touches, but it does not link them. It also does not search the tracker for overlapping issues before it writes, so a spec can duplicate work that someone already filed, and nothing warns you. If the area is busy, search the tracker yourself first.
 
-Pass the map path, not an individual decision ticket. [wayfinder](./wayfinder.md) produces decisions, and `to-spec` collapses them into one buildable document.
+**`/to-tickets` couldn't read my spec: it kept truncating.**
+The spec is a local file at `.scratch/<feature-slug>/spec.md`, so nothing fetches it over a tracker API. The local failure looks the same, though: a very large spec can outgrow what one context window reads back cleanly, and a later re-read may lose the tail of it. To fix this, do not [clear](https://www.aihero.dev/ai-coding-dictionary/clearing) or [compact](https://www.aihero.dev/ai-coding-dictionary/compaction) between `/to-spec` and `/to-tickets`. Run them in the same window, and `/to-tickets` never has to read the spec back.
 
 ## It's working if
 
-- It starts writing instead of opening a fresh interview.
-- It proposes the fewest useful test seams and gets your agreement before prose.
-- It comes back in the project's nouns, not generic product language.
-- Every decision is one you can remember making.
-- The spec exists at the expected `.scratch/` path with `Status: ready-for-agent`.
+- It starts writing instead of asking you a new round of questions.
+- It shows you the seams before it writes, and proposes as few as it can.
+- It uses your project's nouns, not generic product-management boilerplate.
+- You remember making every decision in it. It invented nothing to fill a section.
+- The out-of-scope section lists real things. The things you refused are usually the most useful lines on the page.
 
 ## Where it fits
 
-`to-spec` is the multi-session step in the main build chain:
+`to-spec` is a step in the main build chain, but only on the multi-session branch of it:
 
 ```txt
 grill-with-docs → to-spec → to-tickets → implement → code-review → retro
 ```
 
-Its neighbours upstream are [grill-with-docs](./grill-with-docs.md), which does the deciding, and [wayfinder](./wayfinder.md), whose cleared map merges here. Downstream, [to-tickets](./to-tickets.md) cuts the spec into local tracer-bullet issues. When you are unsure which flow fits, [ask-matt](./ask-matt.md) routes you.
+Upstream, [grill-with-docs](./grill-with-docs.md) makes the decisions that this skill only records, and a finished [wayfinder](./wayfinder.md) map joins the chain here. Downstream, [to-tickets](./to-tickets.md) cuts the spec into tracer-bullet tickets for [implement](./implement.md) to build. When you're unsure which skill or flow fits, [ask-matt](./ask-matt.md) routes you.
