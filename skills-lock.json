@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "skills": {
+    "sync-upstream": { "sourceType": "local", "source": ".opencode/skills/sync-upstream" }
+  }
+}
