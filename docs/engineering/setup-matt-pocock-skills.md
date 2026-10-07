@@ -1,6 +1,6 @@
 ## What it does
 
-`setup-matt-pocock-skills` configures one repo for the engineering flow. It records the local `.scratch/` tracker convention, the five triage status strings, and the location and reading rules for domain docs under `docs/agents/`.
+`setup-matt-pocock-skills` configures one repo for the engineering flow. It records the local `.scratch/` tracker convention, the five triage status strings, and the location and reading rules for domain docs under `docs/agents/`. It also writes two house rules into the root instruction file: agents take no state-changing git action, and Use British English.
 
 Those files are the only thing that varies between repos. The skills themselves are identical everywhere. They read `docs/agents/issue-tracker.md` at run time and do what it says. That is why you never edit a skill file to change the convention: the tracker is local markdown under `.scratch/`, with no host to choose and no CLI to install.
 
@@ -22,12 +22,13 @@ It writes markdown into the repo for you to commit:
 | `domain.md` | `docs/agents/` |
 | `triage-labels.md` | `docs/agents/`, only when the `triage` skill is installed |
 | An `## Agent skills` block | whichever of `CLAUDE.md` or `AGENTS.md` already exists |
+| An `## House rules` block | the same instruction file, every time |
 
 You commit all of it as markdown. There is no user-level or global mode. The config lives in the repo, so every repo gets its own copy.
 
 ## The three decisions
 
-The tracker decision is fixed: issues, specs, wayfinder maps, and conversation history live as local markdown under `.scratch/`. The skill does not inspect remotes or ask you to choose a host. It starts each remaining section with the recommended answer, and skips any question its exploration already answered. Most runs need only two confirmations.
+The tracker decision is fixed: issues, specs, wayfinder maps, and conversation history live as local markdown under `.scratch/`. The skill does not inspect remotes or ask you to choose a host. It starts each remaining section with the recommended answer, and skips any question its exploration already answered. Most runs need only two confirmations. The house rules are not a decision at all: they land every run, and the confirm draft is where you strike them if they are not yours.
 
 | Decision | What it records | When it asks |
 | --- | --- | --- |
@@ -43,7 +44,7 @@ No, and there is no host to use. Issues, specs, wayfinder maps, and conversation
 
 **Do I need to re-run it after updating the skills?**
 
-The direct answer after v1.1 was yes. The skill's own closing message is softer. It tells you to re-run only to start over. Both are defensible. The seed templates change between versions, so a `docs/agents/issue-tracker.md` from an older release can go out of date against the skills that now read it. If a downstream skill does something different from what the docs describe, re-run setup. It is cheap.
+The direct answer after v1.1 was yes. The skill's own closing message is softer. Both are defensible. The seed templates change between versions, so a `docs/agents/issue-tracker.md` from an older release can go out of date against the skills that now read it. If a downstream skill does something different from what the docs describe, re-run setup. It is cheap. One case is simply yes: a repo configured before the house rules existed has no `## House rules` block, and re-running once is what installs it.
 
 **It wrote to `CLAUDE.md`, but I'm on Codex.**
 
@@ -58,7 +59,11 @@ It doesn't, and there are none to create. `docs/agents/triage-labels.md` is a *m
 
 **Can I configure the other skills' behaviour here ([grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) cadence, question format, tone)?**
 
-No. It configures three things: the tracker convention, the status strings, the doc layout. Users have asked to make it the place for per-user preferences. The answer is that skills stay opinionated and take no per-user config. Preferences belong in your `CLAUDE.md` as plain instructions, which every skill already reads.
+No. It writes exactly two house rules of its own, the git rule and "Use British English", and those are fork identity rather than preferences; see the next question. Everything else stays out. Skills stay opinionated and take no per-user config, and users have asked for a preferences panel here more than once. Grilling cadence, question format, and tone belong in your `CLAUDE.md` as plain instructions, which every skill already reads.
+
+**Why does setup write a git rule and a spelling rule at all?**
+
+So that no agent has to guess them, and none tidies them away. They are this fork's identity in the same class as "Skills stay local" and "Nothing commits on your behalf", codified once in the root instruction file and installed everywhere this skill runs. The decision, including the deliberate bend of the "no per-user config" answer above, is recorded in [.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md](../../.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md).
 
 **Can I keep the config in `~/.claude` instead of committing it to every repo?**
 
@@ -73,6 +78,7 @@ One long-standing complaint says yes, in these words: *"having a skill to set up
 - `docs/agents/issue-tracker.md` and `docs/agents/domain.md` exist, plus `triage-labels.md` if `triage` is installed.
 - An `## Agent skills` section appears in the instruction file your harness reads, with a one-line summary pointing at each of those files.
 - The tracker seed describes `.scratch/` paths, `Status:` strings, and append-only `## Comments`.
+- The instruction file carries the `## House rules` block, and sessions leave work uncommitted and flag spelling inconsistencies at hand-back without being told twice.
 - Afterwards, `/to-tickets` publishes without asking you where issues live, and `/triage` uses the status strings rather than inventing them.
 - Nothing in the skill files themselves changed. If setup edited a `SKILL.md`, something went wrong.
 

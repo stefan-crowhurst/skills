@@ -16,7 +16,7 @@ Every one of these still holds when the run ends. Incoming work that breaks one 
 
 5. **Upstream's identity stays.** Its prose, its branding, its voice. The fork changes behaviour, not identity, so a sentence of the original is rewritten only where an invariant above forces it.
 
-6. **No em-dashes.** In every file the run touches.
+6. **No em-dashes, and only British spellings.** In every file the run touches.
 
 ## Localising a hunk
 
@@ -31,7 +31,7 @@ A **clean arrival** is localised the same way. Files that merge without a confli
 
 A **whole-page rewrite** needs a different move. When upstream rewrites a page wholesale (a repo-wide style pass, say), do not resolve it hunk by hunk. Take upstream's page in full as the new base and re-apply the invariants to the whole page, using the fork's pre-merge version only as the glossary of established localised phrasings. Same destination as a hunk localisation, without the archaeology.
 
-Release history is the exception: `CHANGELOG.md` keeps upstream's narrative, versions, and claims as it wrote them, so the fork's history stays readable as upstream's. Only the no-em-dash rule rewrites it, punctuation only.
+Release history is the exception: `CHANGELOG.md` keeps upstream's narrative, versions, claims, and words as it wrote them, so the fork's history stays readable as upstream's. Only the no-em-dash rule rewrites it, punctuation only.
 
 Passage-by-passage rewriting rather than word swapping is a writing job, and the house rules govern it: `Call the Skill tool with "writing-for-agents"`.
 

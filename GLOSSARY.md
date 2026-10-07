@@ -18,6 +18,10 @@ A `wayfinder` unit: a child local issue file of a `.scratch/<effort>/map.md` hol
 **Triage role**:
 A canonical state-machine string written to an **Issue**'s `Status:` line during triage (e.g. `needs-triage`, `ready-for-agent`). Each role maps to a local status string via `docs/agents/triage-labels.md`.
 
+**House rules**:
+The conventions governing how agents write and act in this repo: Use British English, no em-dashes, and no state-changing git actions without an explicit ask.
+_Avoid_: preferences, style guide, per-user config
+
 ## Relationships
 
 - An **Issue tracker** holds many **Issues**

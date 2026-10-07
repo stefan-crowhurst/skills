@@ -92,4 +92,4 @@ Off the main flow entirely.
 
 ## Precondition
 
-**`/setup-matt-pocock-skills`**: run before your first engineering flow to configure the local `.scratch/` tracker, triage status strings, and doc layout the other skills assume.
+**`/setup-matt-pocock-skills`**: run before your first engineering flow to configure the local `.scratch/` tracker, triage status strings, doc layout, and the house rules (no state-changing git actions without an explicit ask, Use British English).

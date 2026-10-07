@@ -28,7 +28,7 @@ This repo is a fork of [mattpocock/skills](https://github.com/mattpocock/skills)
 
 **Skills stay local.** Issues and specs live as local markdown under `.scratch/`, with no GitHub or GitLab integration and no network dependency. `setup-matt-pocock-skills` offers no tracker choice, triage writes `Status:` lines into local issue files instead of tracker labels, and the GitHub/GitLab seed templates are gone. Hosted tracker backends are out of scope for this fork (see [`.out-of-scope/local-markdown-tracker-only.md`](./.out-of-scope/local-markdown-tracker-only.md)).
 
-**Nothing commits on your behalf.** [`/implement`](./skills/engineering/implement/SKILL.md) leaves its work uncommitted in the working tree and hands back for you to review, commit, and push. [`/code-review`](./skills/engineering/code-review/SKILL.md) reviews that uncommitted work as well as committed history.
+**Nothing commits on your behalf.** [`/implement`](./skills/engineering/implement/SKILL.md) leaves its work uncommitted in the working tree and hands back for you to review, commit, and push. [`/code-review`](./skills/engineering/code-review/SKILL.md) reviews that uncommitted work as well as committed history. The rule now covers every run in this repo, not just these two skills ([ADR 0003](./.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md)).
 
 The install commands in this fork point at `stefan-crowhurst/skills`, and the Claude Code plugin is not published from here (the manifests are kept ready under `stefan-crowhurst-skills` for when it is).
 
@@ -201,7 +201,7 @@ Skills I use daily for code work.
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: Grilling session that also builds your project's domain model, sharpening terminology and updating `GLOSSARY.md` and ADRs inline.
 - **[triage](./skills/engineering/triage/SKILL.md)**: Move issues through a state machine of triage roles.
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
-- **[setup-matt-pocock-skills](./skills/engineering/setup-matt-pocock-skills/SKILL.md)**: Configure this repo for local `.scratch/` issues, triage status strings, and domain doc layout. Run once per repo before using the other engineering skills.
+- **[setup-matt-pocock-skills](./skills/engineering/setup-matt-pocock-skills/SKILL.md)**: Configure this repo for local `.scratch/` issues, triage status strings, domain doc layout, and house rules. Run once per repo before using the other engineering skills.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: Turn the current conversation into a local `.scratch/<feature-slug>/spec.md`. No interview, just synthesizes what you've already discussed.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: Break any plan, spec, or conversation into local tracer-bullet issue files, each declaring its blocking edges in `Blocked by:` lines.
 - **[implement](./skills/engineering/implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before handing back the uncommitted work.

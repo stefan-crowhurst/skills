@@ -22,4 +22,12 @@ Every `SKILL.md` is either user-invoked (`disable-model-invocation: true` plus `
 
 To (re)link every skill outside `deprecated/` and `misc/` into the local harness skill directories (`~/.claude/skills`, `~/.agents/skills`), run `scripts/link-skills.sh`. Each entry is a symlink into this repo, so a `git pull` keeps installed skills current; re-run the script after adding, removing, or renaming a skill.
 
+## House rules
+
+Load-bearing, not cruft: [.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md](./.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md). Do not tidy these away.
+
+Do not take state-changing git actions (`add`, `commit`, `push`, branch, checkout, merge, rebase, reset, `stash`, `worktree`, `config`) on your own initiative. Leave the work uncommitted in the working tree and hand back for the human to review, commit, and push. Read-only git (`status`, `diff`, `log`, `show`) is fine when you need to inspect. When the user or a skill's documented procedure explicitly asks for git operations, run exactly those and no more; never treat it as blanket permission.
+
+Use British English in this repo's prose (`SKILL.md` files, docs, `README.md`, ADRs, changesets, code comments): `behaviour`, `localise`, `organise`. Identifiers you coin follow the same route (`colourFor`), while identifiers that extend an established family keep that family's spelling (`colorFor` beside `getColor`), since that is conformity, not a free decision. Never rewrite existing names or untouched prose mid-task; flag spelling inconsistencies at hand-back so they can be fixed in a separate commit. `CHANGELOG.md` keeps upstream's words; only the no-em-dash rule rewrites it.
+
 No em-dashes anywhere in this repo's prose (`SKILL.md` files, docs, `README.md`, `CHANGELOG.md`, ADRs, changesets, code comments). Where a sentence reaches for one, rewrite it instead with a comma, colon, period, parentheses, or a conjunction, whichever the sentence actually wants; never do a blind character substitution.

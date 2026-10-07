@@ -10,7 +10,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[grill-with-docs](./grill-with-docs/SKILL.md)**: Grilling session that also builds your project's domain model, sharpening terminology and updating `GLOSSARY.md` and ADRs inline.
 - **[triage](./triage/SKILL.md)**: Move issues through a state machine of triage roles.
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
-- **[setup-matt-pocock-skills](./setup-matt-pocock-skills/SKILL.md)**: Configure this repo for local `.scratch/` issues, triage status strings, and domain doc layout. Run once per repo.
+- **[setup-matt-pocock-skills](./setup-matt-pocock-skills/SKILL.md)**: Configure this repo for local `.scratch/` issues, triage status strings, domain doc layout, and house rules. Run once per repo.
 - **[to-spec](./to-spec/SKILL.md)**: Turn the current conversation into a local `.scratch/<feature-slug>/spec.md`.
 - **[to-tickets](./to-tickets/SKILL.md)**: Break any plan, spec, or conversation into local tracer-bullet issue files, each declaring its blocking edges in `Blocked by:` lines.
 - **[implement](./implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before handing back the uncommitted work.

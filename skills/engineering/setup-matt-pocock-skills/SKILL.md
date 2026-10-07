@@ -1,6 +1,6 @@
 ---
 name: setup-matt-pocock-skills
-description: "Configure this repo for the engineering skills: set up its local markdown tracker, triage vocabulary, and domain doc layout. Run once before first use of the other engineering skills."
+description: "Configure this repo for the engineering skills: set up its local markdown tracker, triage vocabulary, domain doc layout, and house rules. Run once before first use of the other engineering skills."
 disable-model-invocation: true
 ---
 
@@ -11,6 +11,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Issue tracker**: local markdown files under `.scratch/`
 - **Triage status strings**: the values used for the five canonical triage roles
 - **Domain docs**: where `GLOSSARY.md` and ADRs live, and the consumer rules for reading them
+- **House rules**: the conduct rules every run follows: no state-changing git actions without an explicit ask, and Use British English
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
 
@@ -20,7 +21,7 @@ This is a prompt-driven skill, not a deterministic script. Explore, present what
 
 Look at the current repo to understand its starting state. Read whatever exists; don't assume:
 
-- `AGENTS.md` and `CLAUDE.md` at the repo root: does either exist? Is there already an `## Agent skills` section in either?
+- `AGENTS.md` and `CLAUDE.md` at the repo root: does either exist? Is there already an `## Agent skills` section in either? An existing `## House rules` section, or a git or spelling policy elsewhere in either file, is a clash to flag at the confirm step, not something to overwrite.
 - `GLOSSARY.md` and `GLOSSARY-MAP.md` at the repo root
 - `docs/adr/` and any `src/*/docs/adr/` directories
 - `docs/agents/`: does this skill's prior output already exist?
@@ -57,6 +58,7 @@ Offer **multi-context** (a root `GLOSSARY-MAP.md` pointing to per-context `GLOSS
 Show the user a draft of:
 
 - The `## Agent skills` block to add to whichever of `CLAUDE.md` / `AGENTS.md` is being edited (see step 4 for selection rules)
+- The `## House rules` block that goes into the same file
 - The contents of `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
 
 Let them edit before writing.
@@ -71,7 +73,7 @@ Let them edit before writing.
 
 Never create `AGENTS.md` when `CLAUDE.md` already exists (or vice versa); always edit the one that's already there.
 
-If an `## Agent skills` block already exists in the chosen file, update its contents in-place rather than appending a duplicate. Don't overwrite user edits to the surrounding sections.
+If an `## Agent skills` or `## House rules` block already exists in the chosen file, update its contents in-place rather than appending a duplicate. Don't overwrite user edits to the surrounding sections.
 
 The block:
 
@@ -93,6 +95,16 @@ The block:
 
 Include the `### Triage status strings` sub-block, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it isn't, both are omitted.
 
+Then add the `## House rules` block to the same file. It is always written, with no interview section of its own: it records fork identity rather than per-repo config (deliberate, and why lives in [.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md](../../../.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md), which is also where the "do not tidy" case is made).
+
+```markdown
+## House rules
+
+Do not take state-changing git actions (`add`, `commit`, `push`, branch, checkout, merge, rebase, reset, `stash`, `worktree`, `config`) on your own initiative. Leave the work uncommitted in the working tree and hand back for the human to review, commit, and push. Read-only git (`status`, `diff`, `log`, `show`) is fine when you need to inspect. When the user or a skill's documented procedure explicitly asks for git operations, run exactly those and no more.
+
+Use British English in prose and comments, and in identifiers you coin (`colourFor`). Identifiers that extend an established family keep that family's spelling (`colorFor` beside `getColor`), since that is conformity, not a free decision. Never rewrite existing names or untouched prose mid-task; flag spelling inconsistencies at hand-back so they can be fixed in a separate commit.
+```
+
 Then write the docs files using the seed templates in this skill folder as a starting point:
 
 - [issue-tracker-local.md](./issue-tracker-local.md): local-markdown issue tracker
@@ -103,4 +115,4 @@ Write `docs/agents/issue-tracker.md` from the local-markdown seed.
 
 ### 5. Done
 
-Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later; re-running this skill is only necessary to restart from scratch.
+Tell the user the setup is complete, which engineering skills will now read from these files, and which house rules the run just installed. Mention they can edit `docs/agents/*.md` directly later. Re-running restarts from scratch; it is harmless otherwise, since it updates its own blocks in place.
