@@ -18,6 +18,8 @@ Every one of these still holds when the run ends. Incoming work that breaks one 
 
 6. **No em-dashes, and only British spellings.** In every file the run touches.
 
+7. **The fork's setup writes stay.** `setup-matt-pocock-skills` writes two blocks upstream's version does not: the `## House rules` block in every repo it configures, and a `## Running commands` note when that repo pins its toolchain with Nix (flakes, nix-shell, or devenv), naming the entry command for the flavour present. The note is detection, not choice: no Nix signals, no note. Wording that describes setup's writes without these blocks is incomplete rather than authoritative, and a whole-page rewrite of the skill puts them back after taking upstream's page as the base.
+
 ## Localising a hunk
 
 Where both sides edited the same passage, work from upstream's side and re-apply the invariants:

@@ -12,6 +12,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Triage status strings**: the values used for the five canonical triage roles
 - **Domain docs**: where `GLOSSARY.md` and ADRs live, and the consumer rules for reading them
 - **House rules**: the conduct rules every run follows: no state-changing git actions without an explicit ask, and Use British English
+- **Running commands**: how to reach the pinned toolchain when the repo uses Nix (flakes, nix-shell, or devenv), written only when it does
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
 
@@ -28,6 +29,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `.scratch/`: a sign that a local-markdown issue tracker convention is already in use
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section B runs at all.
 - Monorepo signals: a `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or a populated `packages/*` with its own `src/`. These are present only in a genuinely large multi-package repo; their absence means single-context, which is almost every repo.
+- Nix signals: `flake.nix`, `shell.nix`, `default.nix`, `devenv.nix`, `devenv.yaml`, or a `.envrc` running `use flake`, `use nix`, `use devenv`, `use_devenv`, or `eval "$(devenv direnvrc)"`. Record which flavour is present and whether direnv loads it. No signals means no `## Running commands` block at all.
 
 ### 2. Present findings and ask
 
@@ -58,6 +60,7 @@ Offer **multi-context** (a root `GLOSSARY-MAP.md` pointing to per-context `GLOSS
 Show the user a draft of:
 
 - The `## Agent skills` block to add to whichever of `CLAUDE.md` / `AGENTS.md` is being edited (see step 4 for selection rules)
+- The `## Running commands` block that goes into the same file, only when exploration found Nix signals
 - The `## House rules` block that goes into the same file
 - The contents of `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
 
@@ -73,7 +76,7 @@ Let them edit before writing.
 
 Never create `AGENTS.md` when `CLAUDE.md` already exists (or vice versa); always edit the one that's already there.
 
-If an `## Agent skills` or `## House rules` block already exists in the chosen file, update its contents in-place rather than appending a duplicate. Don't overwrite user edits to the surrounding sections.
+If an `## Agent skills`, `## Running commands`, or `## House rules` block already exists in the chosen file, update its contents in-place rather than appending a duplicate. Don't overwrite user edits to the surrounding sections.
 
 The block:
 
@@ -95,6 +98,22 @@ The block:
 
 Include the `### Triage status strings` sub-block, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it isn't, both are omitted.
 
+Then add the `## Running commands` block to the same file, only when exploration found Nix signals. When it found none, write nothing at all: no empty block, and no "this repo does not use Nix" line. The block names the entry command for the flavour actually present, and the gotcha it exists to prevent (bare commands run against the host toolchain). Most specific flavour wins; devenv beats a plain flake, since devenv wraps Nix:
+
+- `devenv.nix`, `devenv.yaml`, or `use devenv` in `.envrc` → `devenv shell -- <cmd>`
+- `flake.nix`, no devenv → `nix develop --command <cmd>`
+- `shell.nix` or `default.nix` only → `nix-shell --run "<cmd>"`
+
+When a direnv `.envrc` loads the environment, add one sentence: direnv loads it on `cd`, so commands run normally when it is active, but non-interactive commands often skip the hook, so fall back to the entry command when it isn't.
+
+```markdown
+## Running commands
+
+This repo pins its toolchain with Nix (`flake.nix`). Run build, test, and dev commands inside the pinned shell (`nix develop --command <cmd>`), not against the host toolchain.
+```
+
+Keep the block to the entry command and the direnv fallback. If the environment note ever grows past that (services to start, task runners, several toolchains), move the detail to `docs/agents/environment.md` and leave a one-line pointer here, as with the `## Agent skills` sub-blocks.
+
 Then add the `## House rules` block to the same file. It is always written, with no interview section of its own: it records fork identity rather than per-repo config (deliberate, and why lives in [.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md](../../../.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md), which is also where the "do not tidy" case is made).
 
 ```markdown
@@ -115,4 +134,4 @@ Write `docs/agents/issue-tracker.md` from the local-markdown seed.
 
 ### 5. Done
 
-Tell the user the setup is complete, which engineering skills will now read from these files, and which house rules the run just installed. Mention they can edit `docs/agents/*.md` directly later. Re-running restarts from scratch; it is harmless otherwise, since it updates its own blocks in place.
+Tell the user the setup is complete, which engineering skills will now read from these files, which house rules the run just installed, and the `## Running commands` note when it wrote one. Mention they can edit `docs/agents/*.md` directly later. Re-running restarts from scratch; it is harmless otherwise, since it updates its own blocks in place.

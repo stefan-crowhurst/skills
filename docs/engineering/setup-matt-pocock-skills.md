@@ -1,8 +1,8 @@
 ## What it does
 
-`setup-matt-pocock-skills` configures one repo for the engineering flow. It records the local `.scratch/` tracker convention, the five triage status strings, and the location and reading rules for domain docs under `docs/agents/`. It also writes two house rules into the root instruction file: agents take no state-changing git action, and Use British English.
+`setup-matt-pocock-skills` configures one repo for the engineering flow. It records the local `.scratch/` tracker convention, the five triage status strings, and the location and reading rules for domain docs under `docs/agents/`. It also writes two house rules into the root instruction file: agents take no state-changing git action, and Use British English. When the repo pins its toolchain with Nix (flakes, nix-shell, or devenv), it adds a short `## Running commands` note to the same file: run commands inside the pinned shell, not against the host toolchain. A repo with no Nix signals never sees the note.
 
-Those files are the only thing that varies between repos. The skills themselves are identical everywhere. They read `docs/agents/issue-tracker.md` at run time and do what it says. That is why you never edit a skill file to change the convention: the tracker is local markdown under `.scratch/`, with no host to choose and no CLI to install.
+That configuration is the only thing that varies between repos. The skills themselves are identical everywhere. They read `docs/agents/issue-tracker.md` at run time and do what it says. That is why you never edit a skill file to change the convention: the tracker is local markdown under `.scratch/`, with no host to choose and no CLI to install.
 
 It is a prompt-driven skill, not a deterministic script. It reads `CLAUDE.md` and `GLOSSARY.md`, proposes what it found, and waits for you to confirm before it writes anything.
 
@@ -22,13 +22,14 @@ It writes markdown into the repo for you to commit:
 | `domain.md` | `docs/agents/` |
 | `triage-labels.md` | `docs/agents/`, only when the `triage` skill is installed |
 | An `## Agent skills` block | whichever of `CLAUDE.md` or `AGENTS.md` already exists |
+| An `## Running commands` block | the same instruction file, only when the repo pins its toolchain with Nix |
 | An `## House rules` block | the same instruction file, every time |
 
 You commit all of it as markdown. There is no user-level or global mode. The config lives in the repo, so every repo gets its own copy.
 
 ## The three decisions
 
-The tracker decision is fixed: issues, specs, wayfinder maps, and conversation history live as local markdown under `.scratch/`. The skill does not inspect remotes or ask you to choose a host. It starts each remaining section with the recommended answer, and skips any question its exploration already answered. Most runs need only two confirmations. The house rules are not a decision at all: they land every run, and the confirm draft is where you strike them if they are not yours.
+The tracker decision is fixed: issues, specs, wayfinder maps, and conversation history live as local markdown under `.scratch/`. The skill does not inspect remotes or ask you to choose a host. It starts each remaining section with the recommended answer, and skips any question its exploration already answered. Most runs need only two confirmations. The house rules are not a decision at all: they land every run, and the confirm draft is where you strike them if they are not yours. Neither is the `## Running commands` note: it is detection rather than choice, worded for the Nix flavour the repo already has, and omitted outright when there is none.
 
 | Decision | What it records | When it asks |
 | --- | --- | --- |
@@ -57,6 +58,10 @@ It doesn't, and there are none to create. `docs/agents/triage-labels.md` is a *m
 - If your files already use the canonical names, the mapping is an identity table and there is nothing to configure. That is the intended common case, not a missing step.
 - [wayfinder](./wayfinder.md) needs no map labels either: its maps are files under `.scratch/`, so nothing has to exist before the first wayfinder run.
 
+**It wrote Nix commands into my instruction file.**
+
+Your repo pins its toolchain with Nix, so an agent that runs `npm test` against the host toolchain tests the wrong thing. The note names the entry command for the flavour it found: `nix develop --command`, `nix-shell --run`, or `devenv shell --`, plus a direnv fallback where `.envrc` already loads the environment. A repo with no `flake.nix`, `shell.nix`, `devenv.nix`, or Nix `.envrc` never gets one; the step writes nothing at all rather than a note saying you don't use Nix.
+
 **Can I configure the other skills' behaviour here ([grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) cadence, question format, tone)?**
 
 No. It writes exactly two house rules of its own, the git rule and "Use British English", and those are fork identity rather than preferences; see the next question. Everything else stays out. Skills stay opinionated and take no per-user config, and users have asked for a preferences panel here more than once. Grilling cadence, question format, and tone belong in your `CLAUDE.md` as plain instructions, which every skill already reads.
@@ -64,6 +69,10 @@ No. It writes exactly two house rules of its own, the git rule and "Use British 
 **Why does setup write a git rule and a spelling rule at all?**
 
 So that no agent has to guess them, and none tidies them away. They are this fork's identity in the same class as "Skills stay local" and "Nothing commits on your behalf", codified once in the root instruction file and installed everywhere this skill runs. The decision, including the deliberate bend of the "no per-user config" answer above, is recorded in [.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md](../../.agents/adr/0003-codify-house-rules-in-the-root-instruction-file.md).
+
+**Why is the Nix note in the instruction file when everything else points at `docs/agents/`?**
+
+For the same reason the house rules are. The `docs/agents/` files are config that specific skills read at run time; the note governs every command the agent runs, including the ones no skill anticipated, so it has to be loaded before any skill reaches for a pointer. It is also only a few lines, well under what a pointer plus a file costs. If it ever grows past that (services to start, task runners, several toolchains), the detail graduates to `docs/agents/environment.md` and the block becomes a one-line pointer like the rest.
 
 **Can I keep the config in `~/.claude` instead of committing it to every repo?**
 
@@ -79,6 +88,7 @@ One long-standing complaint says yes, in these words: *"having a skill to set up
 - An `## Agent skills` section appears in the instruction file your harness reads, with a one-line summary pointing at each of those files.
 - The tracker seed describes `.scratch/` paths, `Status:` strings, and append-only `## Comments`.
 - The instruction file carries the `## House rules` block, and sessions leave work uncommitted and flag spelling inconsistencies at hand-back without being told twice.
+- In a repo that pins its toolchain with Nix, the instruction file names the entry command (`nix develop`, `nix-shell`, or `devenv shell`) and sessions use it; in a repo with no Nix files, no Nix wording appears anywhere.
 - Afterwards, `/to-tickets` publishes without asking you where issues live, and `/triage` uses the status strings rather than inventing them.
 - Nothing in the skill files themselves changed. If setup edited a `SKILL.md`, something went wrong.
 

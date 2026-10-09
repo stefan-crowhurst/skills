@@ -38,7 +38,7 @@ Run git as the user who owns the repository. A session running as someone else s
 
    Done when only flags remain undecided.
 
-6. **Verify the invariants.** Sweep for what must not survive a run: conflict markers, `https://aihero.dev/skills-` links under `docs/`, em-dashes, American spellings, and the tracker and commit wording each invariant names. Then confirm discovery still works with `npx skills@latest add . --list`.
+6. **Verify the invariants.** Sweep for what must not survive a run: conflict markers, `https://aihero.dev/skills-` links under `docs/`, em-dashes, American spellings, and the tracker and commit wording each invariant names. Then confirm discovery still works with `npx skills@1.5.9 add . --list`.
 
    Done when every sweep is clean and the discovered skills match what you expect.
 

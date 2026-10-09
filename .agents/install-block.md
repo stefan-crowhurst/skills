@@ -19,7 +19,7 @@ The plugin is not published from this fork. The manifests under `.claude-plugin/
 <canonical-block name="skills-sh-whole-set">
 
 ```bash
-npx skills@latest add stefan-crowhurst/skills
+npx skills@1.5.9 add stefan-crowhurst/skills
 ```
 
 Pick the skills you want, and which coding agents to install them on. **The installer lets you choose which skills to take: make sure `setup-matt-pocock-skills` is one of them.**
@@ -31,16 +31,16 @@ Pick the skills you want, and which coding agents to install them on. **The inst
 <canonical-block name="skills-sh-one-skill">
 
 ```bash
-npx skills@latest add stefan-crowhurst/skills --skill=<name>
+npx skills@1.5.9 add stefan-crowhurst/skills --skill <name>
 ```
 
 ```bash
-npx skills@latest update <name>
+npx skills@1.5.9 update <name>
 ```
 
 </canonical-block>
 
-`skills@latest` is the pinned spelling in all three. The pages under `docs/` used to carry their own copy of these commands; those blocks are now deleted rather than corrected, because the site renders the install commands itself.
+`skills@1.5.9` is the pinned spelling in all three, and the pin is **exact**: `@~1.5.9` and `@^1.5.9` both resolve to installer releases that print a spurious `PromptScript does not support global skill installation` failure per skill on global installs, while the install itself succeeds ([vercel-labs/skills#1352](https://github.com/vercel-labs/skills/issues/1352)). That bug arrived in `1.5.10`, and `Eve` now fails the same way, so any release from `1.5.10` on is affected. `1.5.9` predates both agents and installs the whole set cleanly. Keep the pin until #1352 is closed in a released version, then restore `skills@latest` as the pinned spelling here and propagate again. The single-skill form must use the space spelling `--skill <name>`: `--skill=<name>` is silently ignored and installs the whole set, on every version tested. The pages under `docs/` used to carry their own copy of these commands; those blocks are now deleted rather than corrected, because the site renders the install commands itself.
 
 ## The two routes are exclusive
 
