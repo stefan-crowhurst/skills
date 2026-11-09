@@ -38,15 +38,13 @@ The install commands in this fork point at `stefan-crowhurst/skills`, and the Cl
 
 ### 1. Get the skills
 
-Every command below is pinned to `skills@1.5.9` exactly. Later releases of the installer print a spurious `PromptScript does not support global skill installation` error on global installs even though the install succeeded ([vercel-labs/skills#1352](https://github.com/vercel-labs/skills/issues/1352)), and `@~1.5.9` or `@^1.5.9` would pull one of those in. See [`.agents/install-block.md`](./.agents/install-block.md) for when the pin comes off.
-
 <details>
 <summary><strong>Claude Code</strong></summary>
 
 The Claude Code plugin is not published from this fork. Install with skills.sh, same as everyone else:
 
 ```bash
-npx skills@1.5.9 add stefan-crowhurst/skills
+npx skills@latest add stefan-crowhurst/skills
 ```
 
 Pick the skills you want, and which coding agents to install them on. **The installer lets you choose which skills to take, so make sure `setup-matt-pocock-skills` is one of them.**
@@ -57,7 +55,7 @@ Pick the skills you want, and which coding agents to install them on. **The inst
 <summary><strong>Codex, and other agents</strong></summary>
 
 ```bash
-npx skills@1.5.9 add stefan-crowhurst/skills
+npx skills@latest add stefan-crowhurst/skills
 ```
 
 Pick the skills you want, and which coding agents to install them on. **The installer lets you choose which skills to take, so make sure `setup-matt-pocock-skills` is one of them.**
@@ -72,10 +70,10 @@ A native Codex plugin is on the roadmap (see [`.agents/adr/0002-ship-as-a-claude
 Use the same installer, on any agent, including Claude Code:
 
 ```bash
-npx skills@1.5.9 add stefan-crowhurst/skills
+npx skills@latest add stefan-crowhurst/skills
 ```
 
-It writes the skills into your repo as ordinary files you own and can edit. Nothing updates behind your back; pull my latest changes when you want them with `npx skills@1.5.9 update`.
+It writes the skills into your repo as ordinary files you own and can edit. Nothing updates behind your back; pull my latest changes when you want them with `npx skills@latest update`.
 
 </details>
 
