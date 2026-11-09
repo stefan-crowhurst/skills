@@ -35,7 +35,7 @@ What accumulates in that directory:
 | `assets/*` | Reusable components, starting with a shared stylesheet, so the lessons look like one course |
 | `NOTES.md` | Your stated teaching preferences |
 
-Two notes on that list. A glossary suits most topics, but the skill ships a `GLOSSARY-FORMAT.md` that `SKILL.md` no longer links to, so you will only get one if you ask. And the agent does not always create the workspace where you expect, so read the first question below before you build a long course in it.
+Two notes on that list. A glossary suits most topics, but the skill ships a `GLOSSARY-FORMAT.md` that `SKILL.md` no longer links to, so you only get one if you ask. All of it lands in the directory you ran `/teach` in.
 
 ## Storage strength, not fluency
 
@@ -56,7 +56,7 @@ Lessons are built from **components** in `assets/`: stylesheets, quiz widgets, s
 ## Common questions
 
 **Where does it put the files? Mine ended up in `~/.claude/skills`.**
-A real, open bug. `SKILL.md` uses `./` for two different roots. `./MISSION-FORMAT.md` and its siblings sit next to `SKILL.md` in the installed skill. `./lessons/`, `./reference/`, `./learning-records/` and `./assets/` belong in your directory. An agent that resolves the first kind against the skill's install directory then resolves the second kind there too, and writes your course into the skill folder. Check where the first lesson landed before you build on it. When you start, name the directory instead of trusting the agent to understand "the current directory".
+In the directory you ran `/teach` in, not the skill's install folder.
 
 **Do I stay in one session, or start a new one per lesson?**
 All three approaches work: staying in the same session, re-invoking `/teach` in a new session, or opening a new session in the same folder. Each lesson is its own invocation. The course state lives in the folder, not in the conversation. Common practice is to open a fresh session in the workspace and say `/teach next lesson for <topic>`.
@@ -92,6 +92,6 @@ There is no canonical answer, and the reported differences are large. Users repo
 
 ## Where it fits
 
-`teach` is a **reach-for-it-anytime standalone**. It is not a step in a build chain and shares no artifacts with the engineering flow; it works in its own directory for as long as you study the topic.
+`teach` is a **reach-for-it-anytime standalone**. It is not a step in a build chain and shares no artefacts with the engineering flow; it works in its own directory for as long as you study the topic.
 
 Its one real neighbour is [handoff](./handoff.md). Together they answer "what do I do if I'm being grilled about something I don't understand?" Don't stop the grilling to learn. `/handoff` to a teaching workspace, learn the topic there with `/teach`, then go back and continue where you left off. The nearby alternative is [research](../engineering/research.md), for when what you want is a cited document rather than lessons and retention. When you are not sure which skill or flow fits, [ask-matt](../engineering/ask-matt.md) routes you over the whole set.

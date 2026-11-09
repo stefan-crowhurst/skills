@@ -38,7 +38,7 @@ Phase 1 gets the most effort because it is the only hard phase. The skill lists 
 
 *A* loop is not the goal. **Tight** is: fast (seconds), deterministic (same verdict every run), sharp (asserts your exact symptom, not "didn't crash"), and runnable by the agent without you. A 30-second flaky loop is barely better than none. For a bug that only shows up sometimes, the target is not a clean repro but a **higher reproduction rate**: loop the trigger, parallelise, add stress, inject sleeps, until the flake rate is high enough to debug against.
 
-When the agent cannot build one, the skill tells it to stop and say so, list what it tried, and ask you for [environment](https://www.aihero.dev/ai-coding-dictionary/environment) access, a captured artifact, or permission to add temporary instrumentation. It must not go on to form hypotheses anyway.
+When the agent cannot build one, the skill tells it to stop and say so, list what it tried, and ask you for [environment](https://www.aihero.dev/ai-coding-dictionary/environment) access, a captured artefact, or permission to add temporary instrumentation. It must not go on to form hypotheses anyway.
 
 ## The gates between phases
 
@@ -69,7 +69,7 @@ No. Only Phase 3 has a human checkpoint: the ranked hypothesis list is shown to 
 Partly, and neither skill says so. As one reader put it: "Triage's step 3 is essentially a shallow, bounded instance of diagnosing-bugs Phase 1–2, but neither file mentions the other." Triage does a bounded "is this actually a bug, and what is the surface" pass; this skill does the thorough version. Running triage first is not wasted, because its verification often gives you most of Phase 1's raw material. But expect this skill to redo that work in full, and expect no cross-reference to tell you so.
 
 **Will the repro output it pastes leak secrets?**
-It might. The skill asks the agent to paste the invocation and its output, and to request artifacts like HAR files, log dumps, and core dumps. No instruction tells the agent to sanitise them. An open request raises exactly this (credentials, tokens, cookies, and personal data riding along into a chat, an issue, or a PR) and proposes a redaction guardrail. It is unimplemented. Treat redaction as your job for now, particularly before the output goes anywhere public.
+It might. The skill asks the agent to paste the invocation and its output, and to request artefacts like HAR files, log dumps, and core dumps. No instruction tells the agent to sanitise them. An open request raises exactly this (credentials, tokens, cookies, and personal data riding along into a chat, an issue, or a PR) and proposes a redaction guardrail. It is unimplemented. Treat redaction as your job for now, particularly before the output goes anywhere public.
 
 **My security scanner flagged this skill as high risk.**
 Snyk flags it, and the flag is a false positive. It is the only skill in the set that ships an executable shell script (`hitl-loop.template.sh`) alongside instructions to run it and to curl a dev server. A shipped `.sh` file, instructions to run it, and outbound HTTP together are enough to trigger a static scanner. The script itself is about 30 lines of `read -r -p` prompts that pause for human input. The scanner rates what the skill could do, not a proven exploit.

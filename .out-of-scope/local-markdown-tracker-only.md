@@ -18,4 +18,4 @@ A single user can read and edit all of it with no account, no token, and no netw
 ## Prior requests
 
 - The upstream policy this file replaces, "Issue tracker integrations are limited to mainstream tools", which kept GitHub, GitLab, and Backlog.md as first-class options.
-- #99 (upstream): "Add dex as an issue tracker backend".
+- "Add dex as an issue tracker backend" (upstream).

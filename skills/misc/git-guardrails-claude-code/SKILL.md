@@ -80,7 +80,7 @@ Add to the appropriate settings file:
 
 If the settings file already exists, merge the hook into the existing `hooks.PreToolUse` array. Don't overwrite other settings.
 
-### 4. Ask about customization
+### 4. Ask about customisation
 
 Ask if user wants to add or remove any patterns from the blocked list. Edit the copied script accordingly.
 

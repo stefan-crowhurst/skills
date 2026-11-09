@@ -16,9 +16,11 @@ Every one of these still holds when the run ends. Incoming work that breaks one 
 
 5. **Upstream's identity stays.** Its prose, its branding, its voice. The fork changes behaviour, not identity, so a sentence of the original is rewritten only where an invariant above forces it.
 
-6. **No em-dashes, and only British spellings.** In every file the run touches.
+6. **No em-dashes, and British spellings throughout.** In every file the run touches. Fix an American spelling when you find one in the same run; do not rename identifiers or established names (`domain-modeling`, `colorFor` beside `getColor`).
 
 7. **The fork's setup writes stay.** `setup-matt-pocock-skills` writes two blocks upstream's version does not: the `## House rules` block in every repo it configures, and a `## Running commands` note when that repo pins its toolchain with Nix (flakes, nix-shell, or devenv), naming the entry command for the flavour present. The note is detection, not choice: no Nix signals, no note. Wording that describes setup's writes without these blocks is incomplete rather than authoritative, and a whole-page rewrite of the skill puts them back after taking upstream's page as the base.
+
+8. **Remote operations have a local alternative.** Upstream often keeps a local markdown mode but writes the hosted shape into the surrounding text. Take the local option where it exists, and build the fork's own where it does not. See [Local-only alternatives](#local-only-alternatives).
 
 ## Localising a hunk
 
@@ -33,7 +35,17 @@ A **clean arrival** is localised the same way. Files that merge without a confli
 
 A **whole-page rewrite** needs a different move. When upstream rewrites a page wholesale (a repo-wide style pass, say), do not resolve it hunk by hunk. Take upstream's page in full as the new base and re-apply the invariants to the whole page, using the fork's pre-merge version only as the glossary of established localised phrasings. Same destination as a hunk localisation, without the archaeology.
 
-Release history is the exception: `CHANGELOG.md` keeps upstream's narrative, versions, claims, and words as it wrote them, so the fork's history stays readable as upstream's. Only the no-em-dash rule rewrites it, punctuation only.
+## Local-only alternatives
+
+Upstream often keeps a local markdown mode but writes the hosted shape into the surrounding text. Resolve `setup-matt-pocock-skills`, `to-tickets`, `triage`, and `wayfinder` to their local mode: `.scratch/` files, `Status:` lines, `Blocked by:` headers, and local research notes. Drop the label, child-issue, native-blocker, assignee, and PR branches rather than translating them.
+
+Some upstream changes have no local mode. `implement-spec` is the clear case: worktrees, an integration branch, merges, and a draft PR are the remote shape. Keep the fork's shared working tree and hand-back instead. `implement`, `code-review`, `to-spec`, and `research` say "the tracker" generically; resolve that to `.scratch/`.
+
+If a new remote-only operation appears, do not invent the fork's alternative alone. Describe what upstream assumes, propose the local shape, and agree it with the user before rewriting the skill. Once agreed, build it from the invariants and record the divergence in the flag list so the next sync expects the conflict. The shared working tree and hand-back in `implement-spec` are an agreed alternative, not a precedent for deciding new ones unilaterally.
+
+## Upstream history
+
+ADRs, changesets, release notes, and `CHANGELOG.md` describe the upstream project, including infrastructure this fork does not publish or use: the Claude Code plugin, managed marketplaces, hosted trackers, and release workflows. Keep the history, because rewriting it makes the next merge harder, but add a short fork note where a reader of this repo would otherwise take the claim as true. `CHANGELOG.md` is the exception: keep its words and change only em-dashes.
 
 Passage-by-passage rewriting rather than word swapping is a writing job, and the house rules govern it: `Call the Skill tool with "writing-for-agents"`.
 

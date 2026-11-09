@@ -41,14 +41,14 @@ Two things happen before anything is published. `to-tickets` looks for prefactor
 
 ## Blocking edges
 
-The edges are the point of the artifact. They work in two ways:
+The edges are the point of the artefact. They work in two ways:
 
-| Artifact | Where the edges live | How you work them |
+| Artefact | Where the edges live | How you work them |
 | --- | --- | --- |
 | Spec | `.scratch/<feature-slug>/spec.md` | Read it as the parent |
 | Issue | `Blocked by: 01, 02` | Scan local files, then work the first unblocked ticket |
 
-The edges live in the file either way. The layout decides only what is visibly ready: a ticket is on the **frontier** when every number in its `Blocked by:` line has `Status: done`. `to-tickets` produces the artifact; running it (one session at a time, or a fleet) is your job, not the skill's.
+The edges live in the file either way. The layout decides only what is visibly ready: a ticket is on the **frontier** when every number in its `Blocked by:` line has `Status: done`. `to-tickets` produces the artefact; running it (one session at a time, or a fleet) is your job, not the skill's.
 
 ## The wide-refactor exception
 
@@ -80,10 +80,10 @@ They did, and that was a bug. A single shared file also caused race conditions w
 The spec is a local file at `.scratch/<feature-slug>/spec.md`, so nothing fetches it over a tracker API. The local failure looks the same, though: a very large spec can outgrow what one context window reads back cleanly, and a later re-read may lose the tail of it. To fix this, do not [clear](https://www.aihero.dev/ai-coding-dictionary/clearing) or [compact](https://www.aihero.dev/ai-coding-dictionary/compaction) between `/to-spec` and `/to-tickets`. Run them in the same window, and `/to-tickets` never has to read the spec back.
 
 **The acceptance criteria graded nothing: some passed before any work was done.**
-The template asks for criteria and says nothing about whether they can fail, so this happens. Three shapes recur: a criterion already true at the base commit, a criterion that only work in another ticket can satisfy, and one that restates the request rather than deriving from the artifact. Vertical slicing prevents most of it, because a slice that delivers new behaviour fails at the base commit by construction. The check is still worth doing by hand. For each criterion, name the observation that would show it false, and confirm it fails at the commit the implementer starts from.
+The template asks for criteria and says nothing about whether they can fail, so this happens. Three shapes recur: a criterion already true at the base commit, a criterion that only work in another ticket can satisfy, and one that restates the request rather than deriving from the artefact. Vertical slicing prevents most of it, because a slice that delivers new behaviour fails at the base commit by construction. The check is still worth doing by hand. For each criterion, name the observation that would show it false, and confirm it fails at the commit the implementer starts from.
 
 **The tickets are published. How do I actually run them?**
-The skill stops at the artifact, and there is no auto-dispatch mode. Dispatch is manual: look over the local issues, count the ones with no open blockers, and open that many agent sessions. Give each ticket a fresh context, and clear between them. [implement](./implement.md) does not reliably close or check off the issue when it finishes, so you update its state yourself: claim it with `Status: claimed`, then set it to `Status: done` and append the resolution.
+The skill stops at the artefact, and there is no auto-dispatch mode. Dispatch is manual: look over the local issues, count the ones with no open blockers, and open that many agent sessions. Give each ticket a fresh context, and clear between them. [implement](./implement.md) does not reliably close or check off the issue when it finishes, so you update its state yourself: claim it with `Status: claimed`, then set it to `Status: done` and append the resolution.
 
 ## It's working if
 

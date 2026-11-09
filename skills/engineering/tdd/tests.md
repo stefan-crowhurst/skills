@@ -5,7 +5,7 @@
 **Integration-style**: Test through real interfaces, not mocks of internal parts.
 
 ```typescript
-// GOOD: Tests observable behavior
+// GOOD: Tests observable behaviour
 test("user can checkout with valid cart", async () => {
   const cart = createCart();
   cart.add(product);
@@ -16,7 +16,7 @@ test("user can checkout with valid cart", async () => {
 
 Characteristics:
 
-- Tests behavior users/callers care about
+- Tests behaviour users/callers care about
 - Uses public API only
 - Survives internal refactors
 - Describes WHAT, not HOW
@@ -40,7 +40,7 @@ Red flags:
 - Mocking internal collaborators
 - Testing private methods
 - Asserting on call counts/order
-- Test breaks when refactoring without behavior change
+- Test breaks when refactoring without behaviour change
 - Test name describes HOW not WHAT
 - Verifying through external means instead of interface
 

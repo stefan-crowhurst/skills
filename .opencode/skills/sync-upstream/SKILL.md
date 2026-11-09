@@ -34,11 +34,11 @@ Run git as the user who owns the repository. A session running as someone else s
 
    Done when every mechanical file is resolved and you have checked the output rather than trusted it.
 
-5. **Resolve the structural and semantic surface yourself.** Renames, removals, and graduations set the shape of the repo, and any hunk where the fork's intent decides the answer is yours to make. Where an invariant and an upstream change cannot both hold, raise a flag instead of picking.
+5. **Resolve the structural and semantic surface yourself.** Renames, removals, and graduations set the shape of the repo, and any hunk where the fork's intent decides the answer is yours to make. Where an invariant and an upstream change cannot both hold, raise a flag instead of picking. Check every new ADR, changeset, and release note against the [upstream history](LOCALISE.md#upstream-history) rule, and every new remote-only operation against [local-only alternatives](LOCALISE.md#local-only-alternatives); where a new alternative is needed, propose it and agree it with the user before rewriting.
 
    Done when only flags remain undecided.
 
-6. **Verify the invariants.** Sweep for what must not survive a run: conflict markers, `https://aihero.dev/skills-` links under `docs/`, em-dashes, American spellings, and the tracker and commit wording each invariant names. Then confirm discovery still works with `npx skills@1.5.9 add . --list`.
+6. **Verify the invariants.** Sweep for what must not survive a run: conflict markers, `https://aihero.dev/skills-` links under `docs/`, em-dashes, American spellings (fix them in the same run), and the tracker and commit wording each invariant names. Then confirm discovery still works with `npx skills@1.5.9 add . --list`.
 
    Done when every sweep is clean and the discovered skills match what you expect.
 

@@ -6,11 +6,13 @@ disable-model-invocation: true
 
 You have been provided a spec. This spec should have tickets associated with it, describing how to implement the spec.
 
-The issue tracker should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
+The local tracker conventions should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
 
 The goal is the entire spec implemented in the working tree, left uncommitted for the user to review.
 
 The tickets are not a list of steps. They are a **task graph** with blocking relationships between them. This means there is always a **frontier** of tickets which are ready to be grabbed.
+
+Start every subagent with a fresh context window.
 
 Communication to and from subagents should be sparse. Communicate primarily through **context pointers**: to the spec, tickets, research notes, and the working tree. Don't duplicate information already available via pointers.
 
@@ -24,12 +26,12 @@ Communication to and from subagents should be sparse. Communicate primarily thro
 
 3. Do **not** create branches, worktrees, commits, or PRs. All work lands in the shared working tree.
 
-4. Use **implementer subagents** to implement the tickets in the current **frontier**, working directly in the working tree. Each implementer subagent calls the Skill tool with `tdd` to build the ticket.
+4. Use a fresh **implementer subagent** for each ticket, working directly in the shared working tree. Each implementer subagent calls the Skill tool with `tdd` to build the ticket.
 
 5. As each **implementer subagent** completes, verify its work against the ticket it implements.
 
 6. If this changes the **frontier** of available tickets, kick off more **implementer subagents** to work on the new tickets. This allows for maximum concurrency.
 
-7. Once all tickets are complete, call the Skill tool with `code-review` on the working tree. Fix all issues raised by the code review in a single **implementer subagent**.
+7. Once all tickets are complete, call the Skill tool with `code-review` on the working tree. Fix all issues raised by the code review in a single fresh **implementer subagent**.
 
 8. Hand back: report what was implemented and the code review outcome, and leave all changes uncommitted for the user to review, commit, and push.

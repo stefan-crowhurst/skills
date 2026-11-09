@@ -14,7 +14,7 @@ You will also arrive here without choosing to. [wayfinder](./wayfinder.md) files
 
 ## Two branches
 
-The question picks the branch, and the branches produce different artifacts:
+The question picks the branch, and the branches produce different artefacts:
 
 - **"Does this logic / state model feel right?"**: a **single shareable HTML file**. One self-contained page, no build and no server, that someone opens by double-clicking. It carries a labelled state panel that re-renders after every click, free-play buttons for poking at the model in any order, and tabbed **guided walkthroughs** (one scenario per tab, each with the ordered buttons to press underneath it). Everything is labelled in domain language, so you can hand it to a designer, a PM or a domain expert and let them try the model themselves. The logic behind the page is a small pure module (a reducer, a machine, a set of functions) with no DOM code in it, so you can move the validated version straight into the real code.
 - **"What should this look like?"**: several **radically different** UI variations on one route, switchable from a floating bottom bar and a `?variant=` URL param. Variants must disagree about structure, not colour; three card grids with small tweaks answer nothing. They render inside a real page wherever possible, against real data and real density, because a variant judged on an empty page always looks fine.
@@ -41,7 +41,7 @@ The logic branch now emits a single shareable HTML file instead. A terminal app 
 This is a known naming problem. An agent that does not know the flow reads `prototype`, a generic and appealing word, as "the obvious next step" once tickets exist. So agents recommend it by name even where the design was settled in conversation. If you already know what to build, the next step is `/implement`, per ticket. Reach for a prototype only when a specific design question is unresolved and talking won't resolve it.
 
 **Should I prototype the whole application before building any of its production features (say, to demo it to prospects)?**
-That is a different artifact that happens to share this skill's name. A prototype here is scoped to one question, and "what is the whole app?" isn't one. A full-app prototype has no natural stopping point, so it drifts into being the production app: the cleanup pass never happens, and code written under prototype rules (no tests, no error handling) ends up in front of users. If you need a sales demo, build it as a demo on purpose and be explicit that none of it is production. If you need to settle a design question, cut it down to that question.
+That is a different artefact that happens to share this skill's name. A prototype here is scoped to one question, and "what is the whole app?" isn't one. A full-app prototype has no natural stopping point, so it drifts into being the production app: the cleanup pass never happens, and code written under prototype rules (no tests, no error handling) ends up in front of users. If you need a sales demo, build it as a demo on purpose and be explicit that none of it is production. If you need to settle a design question, cut it down to that question.
 
 **How do I run it in its own session?**
 A prototype lives in its own directory and generates a lot of [context](https://www.aihero.dev/ai-coding-dictionary/context) you don't want in the thread that asked the question, so run it somewhere else and bring back only the answer. Use [handoff](../productivity/handoff.md) to move the work into that session and to bring the answer back.

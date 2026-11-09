@@ -58,7 +58,7 @@ Before any [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling), `tr
 
 In the same pass, it runs two more checks against the codebase. The **redundancy** check asks if the feature is already implemented, and searches by domain concept, not by the reporter's wording. The **prior rejection** check asks if `.out-of-scope/` already says no. Both checks are cheap, and a hit on either produces a `wontfix`.
 
-All of this work makes one artifact good: the **agent brief**. This is the structured note appended under `## Comments` when an issue moves to `ready-for-agent`. After `triage` appends it, the brief is the contract and the original report is only context. Briefs are **durable** rather than precise, because an issue can sit in `ready-for-agent` for weeks while the code changes. So a brief names types, signatures and behavioural contracts, and never file paths or line numbers. A confirmed reproduction makes a much stronger brief than a guess.
+All of this work makes one artefact good: the **agent brief**. This is the structured note appended under `## Comments` when an issue moves to `ready-for-agent`. After `triage` appends it, the brief is the contract and the original report is only context. Briefs are **durable** rather than precise, because an issue can sit in `ready-for-agent` for weeks while the code changes. So a brief names types, signatures and behavioural contracts, and never file paths or line numbers. A confirmed reproduction makes a much stronger brief than a guess.
 
 ## A request with code attached
 

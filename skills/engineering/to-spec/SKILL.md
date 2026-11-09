@@ -4,7 +4,7 @@ description: "Turn the current conversation into a local spec: no interview, jus
 disable-model-invocation: true
 ---
 
-This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
+This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesise what you already know.
 
 The local tracker conventions should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
 
@@ -60,7 +60,7 @@ Exception: if a prototype produced a snippet that encodes a decision more precis
 
 A list of testing decisions that were made. Include:
 
-- A description of what makes a good test (only test external behavior, not implementation details)
+- A description of what makes a good test (only test external behaviour, not implementation details)
 - Which modules will be tested
 - Prior art for the tests (i.e. similar types of tests in the codebase)
 

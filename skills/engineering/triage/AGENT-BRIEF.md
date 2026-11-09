@@ -8,13 +8,13 @@ An agent brief is a structured note appended under `## Comments` in a local issu
 
 An issue may sit in `ready-for-agent` for days or weeks. Write the brief so it stays useful even as files are renamed, moved, or refactored.
 
-- **Do** describe interfaces, types, and behavioral contracts
+- **Do** describe interfaces, types, and behavioural contracts
 - **Do** name specific types, function signatures, or config shapes that the agent should look for or modify
 - **Don't** reference file paths: they go stale
 - **Don't** reference line numbers
 - **Don't** assume the current implementation structure will remain the same
 
-### Behavioral, not procedural
+### Behavioural, not procedural
 
 Describe **what** the system should do, not **how** to implement it. The agent will explore the codebase fresh and make its own implementation decisions.
 
@@ -43,11 +43,11 @@ Append this structure under `## Comments`, after the AI disclaimer:
 **Category:** bug / enhancement
 **Summary:** one-line description of what needs to happen
 
-**Current behavior:**
-Describe what happens now. For bugs, this is the broken behavior.
+**Current behaviour:**
+Describe what happens now. For bugs, this is the broken behaviour.
 For enhancements, this is the status quo the feature builds on.
 
-**Desired behavior:**
+**Desired behaviour:**
 Describe what should happen after the agent's work is complete.
 Be specific about edge cases and error conditions.
 
@@ -76,11 +76,11 @@ Be specific about edge cases and error conditions.
 **Category:** bug
 **Summary:** Skill description truncation drops mid-word, producing broken output
 
-**Current behavior:**
+**Current behaviour:**
 When a skill description exceeds 1024 characters, it is truncated at exactly
 1024 characters regardless of word boundaries.
 
-**Desired behavior:**
+**Desired behaviour:**
 Truncation breaks at the last word boundary before 1024 characters and appends
 `...` to indicate truncation.
 

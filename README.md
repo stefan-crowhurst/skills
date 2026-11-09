@@ -100,7 +100,7 @@ I built these skills as a way to fix common failure modes I see with Claude Code
 >
 > David Thomas & Andrew Hunt, [The Pragmatic Programmer](https://www.amazon.co.uk/Pragmatic-Programmer-Anniversary-Journey-Mastery/dp/B0833F1T3V)
 
-**The Problem**. The most common failure mode in software development is misalignment. You think the dev knows what you want. Then you see what they've built - and you realize it didn't understand you at all.
+**The Problem**. The most common failure mode in software development is misalignment. You think the dev knows what you want. Then you see what they've built - and you realise it didn't understand you at all.
 
 This is just the same in the AI age. There is a communication gap between you and the agent. The fix for this is a **grilling session** - getting the agent to ask you detailed questions about what you're building.
 
@@ -205,7 +205,7 @@ Skills I use daily for code work.
 - **[triage](./skills/engineering/triage/SKILL.md)**: Move issues through a state machine of triage roles.
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 - **[setup-matt-pocock-skills](./skills/engineering/setup-matt-pocock-skills/SKILL.md)**: Configure this repo for local `.scratch/` issues, triage status strings, domain doc layout, and house rules. Run once per repo before using the other engineering skills.
-- **[to-spec](./skills/engineering/to-spec/SKILL.md)**: Turn the current conversation into a local `.scratch/<feature-slug>/spec.md`. No interview, just synthesizes what you've already discussed.
+- **[to-spec](./skills/engineering/to-spec/SKILL.md)**: Turn the current conversation into a local `.scratch/<feature-slug>/spec.md`. No interview, just synthesises what you've already discussed.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: Break any plan, spec, or conversation into local tracer-bullet issue files, each declaring its blocking edges in `Blocked by:` lines.
 - **[implement](./skills/engineering/implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before handing back the uncommitted work.
 - **[implement-spec](./skills/engineering/implement-spec/SKILL.md)**: Implement a whole spec in one run. Works the tickets as a task graph, running implementer subagents across the ready frontier for maximum concurrency, then closes out with `/code-review` and hands back the uncommitted work.
